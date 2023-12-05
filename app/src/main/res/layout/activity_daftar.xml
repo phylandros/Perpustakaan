@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DaftarActivity"
+    android:background="#0766AD"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textSize="26dp"
+            android:fontFamily="@font/outfitlight"
+            android:lineHeight="40dp"
+            android:textStyle="bold"
+            android:textColor="#FFF"
+            />
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sub_title"
+            android:textSize="20dp"
+            android:lineSpacingExtra="6dp"
+            android:fontFamily="@font/outfit"
+            android:textColor="#FFF"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:gravity="bottom"
+        android:background="@drawable/shape"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daftar"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="#0766AD"
+            android:textSize="26dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="25dp"
+            android:layout_gravity="center"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nama"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="16dp"/>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Masukan Nama"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:textSize="14dp"
+                />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="16dp"/>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Masukan Email"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:textSize="14dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:layout_marginTop="10dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="16dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Masukkan Password"
+                android:textColor="#000"
+                android:textSize="14dp"
+                android:textColorHint="#000"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/btnslnjt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/shapemasuk"
+                android:textColor="#FFF"
+                android:text="Selanjutnya"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>
