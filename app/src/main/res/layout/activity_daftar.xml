@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="380dp"
         android:gravity="bottom"
         android:background="@drawable/shape"
         android:layout_alignParentBottom="true"
@@ -125,7 +125,7 @@
             <Button
                 android:id="@+id/btnslnjt"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/shapemasuk"
                 android:textColor="#FFF"

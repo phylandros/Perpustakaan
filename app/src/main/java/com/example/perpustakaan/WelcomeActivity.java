@@ -8,18 +8,19 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class DataDiriDaftarActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_data_diri_daftar);
-        Button btnDDaftar = findViewById(R.id.btndaftardata);
-        btnDDaftar.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_welcome);
+
+        Button btnWelkom = findViewById(R.id.btnWelkom);
+        btnWelkom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DataDiriDaftarActivity.this, HomeActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

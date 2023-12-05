@@ -3,4 +3,6 @@
 
     <string name="title">E-Perpus Paling Mudah Pinjam Buku</string>
     <string name="sub_title">Semakin mudah untuk mencari perpustakaan terdekat dan meminjam buku cukup menggunakan smartphone</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

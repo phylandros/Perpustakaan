@@ -108,7 +108,7 @@
                     <Button
                         android:id="@+id/btndaftar"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/shapesignup"
                         android:text="Daftar"
@@ -118,7 +118,7 @@
                     />
                     <Button
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/shapemasuk"
                         android:textColor="#FFF"
@@ -127,7 +127,6 @@
                         android:textSize="16dp"
                     />
                 </LinearLayout>
-
 
     </LinearLayout>
 </RelativeLayout>

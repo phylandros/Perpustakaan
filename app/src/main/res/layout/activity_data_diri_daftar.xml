@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DaftarActivity"
+    tools:context=".DataDiriDaftarActivity"
     android:background="#0766AD"
     >
 
@@ -54,13 +54,29 @@
             android:layout_gravity="center"
             >
 
-            <View
+            <RelativeLayout
                 android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/avatarcircle"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="25dp"
-                />
+                android:gravity="center"
+                >
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/profile"
+                    android:layout_marginBottom="25dp"
+                    />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/camera"
+                    android:background="@drawable/avatarcircle"
+                    android:translationX="108dp"
+                    android:translationY="100dp"/>
+                </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,20 +132,21 @@
                 android:textColorHint="#000"
                 />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <Button
+                android:id="@+id/btndaftardata"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/shapemasuk"
-                android:textColor="#FFF"
                 android:text="Daftar"
-                android:textStyle="bold"
+                android:textColor="#FFF"
                 android:textSize="16dp"
-                />
+                android:textStyle="bold" />
         </LinearLayout>
 
 
