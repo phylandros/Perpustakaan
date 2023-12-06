@@ -1,46 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DataDiriDaftarActivity"
-    android:background="#0766AD"
-    >
+    android:background="#0766AD">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+<LinearLayout
+    android:background="@drawable/dialogbg"
+    android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="25dp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title"
-            android:textSize="26dp"
-            android:fontFamily="@font/outfitlight"
-            android:lineHeight="40dp"
-            android:textStyle="bold"
-            android:textColor="#FFF"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="570dp"
-        android:gravity="bottom"
-        android:background="@drawable/shape"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lengkapi Data Diri"
+            android:text="Daftar"
+            android:fontFamily="@font/robotobold"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="15dp"
             android:textStyle="bold"
@@ -55,34 +34,11 @@
             android:layout_gravity="center"
             >
 
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                >
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/profile"
-                    android:layout_marginBottom="25dp"
-                    />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/camera"
-                    android:background="@drawable/avatarcircle"
-                    android:translationX="108dp"
-                    android:translationY="100dp"/>
-                </RelativeLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No. Kartu Tanda Penduduk"
+                android:fontFamily="@font/robotobold"
+                android:text="Nama"
                 android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="16dp"/>
@@ -91,7 +47,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Masukan no KTP"
+                android:hint="Masukan Nama"
+                android:fontFamily="@font/robotoreg"
                 android:textColorHint="#000"
                 android:textColor="#000"
                 android:textSize="14dp"
@@ -101,7 +58,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alamat"
+                android:fontFamily="@font/robotobold"
+                android:text="Email"
                 android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="16dp"/>
@@ -110,8 +68,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Masukan alamat"
+                android:hint="Masukan Email"
                 android:textColorHint="#000"
+                android:fontFamily="@font/robotoreg"
                 android:textColor="#000"
                 android:textSize="14dp"
                 />
@@ -119,37 +78,42 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No. Telepon"
+                android:text="Password"
                 android:layout_marginTop="10dp"
                 android:textColor="#000"
                 android:textStyle="bold"
+                android:fontFamily="@font/robotobold"
                 android:textSize="16dp"/>
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Masukkan no telepon"
+                android:hint="Masukkan Password"
                 android:textColor="#000"
+                android:fontFamily="@font/robotoreg"
                 android:textSize="14dp"
                 android:textColorHint="#000"
                 />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            >
             <Button
-                android:id="@+id/btndaftardata"
+                android:id="@+id/btnlanjut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/shapemasuk"
-                android:text="Daftar"
+                android:fontFamily="@font/robotobold"
                 android:textColor="#FFF"
+                android:text="Selanjutnya"
+                android:textStyle="bold"
                 android:textSize="16dp"
-                android:textStyle="bold" />
+                />
         </LinearLayout>
 
 
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>

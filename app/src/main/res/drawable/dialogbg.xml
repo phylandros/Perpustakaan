@@ -5,16 +5,7 @@
         android:color="@color/white"/>
 
     <corners
-        android:topLeftRadius="40dp"
-        android:topRightRadius="40dp" />
-    <padding
-        android:left="10dp"
-        android:right="10dp"
-        android:top="10dp"
-        android:bottom="10dp"/>
-
-    <stroke
-        android:width="2dp"
-        android:color="@color/lavender"/>
+        android:topLeftRadius="35dp"
+        android:topRightRadius="35dp" />
 
 </shape>
