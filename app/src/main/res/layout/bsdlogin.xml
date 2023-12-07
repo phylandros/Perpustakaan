@@ -62,6 +62,7 @@
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:textSize="16dp"/>
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -78,8 +79,7 @@
                 android:id="@+id/layoutButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="2dp">
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btndaftar"

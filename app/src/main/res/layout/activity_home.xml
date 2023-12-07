@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/undertoolbar"
-        android:layout_above="@id/barbawah"
+        android:layout_above="@id/dialog"
         android:layout_marginBottom="-50dp"
         >
 
@@ -75,9 +75,9 @@
 
 
     <LinearLayout
-        android:id="@+id/barbawah"
+        android:id="@+id/dialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:gravity="bottom"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
@@ -87,17 +87,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/shapedisable"
+                android:background="@drawable/shapemasuk"
                 android:textColor="#FFF"
                 android:text="Pinjam Buku"
                 android:textStyle="bold"
                 android:textSize="16dp"
                 />
+
         </LinearLayout>
+
 
     </LinearLayout>
 

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
@@ -52,10 +55,23 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initializeCamera();
+
+                // Tampilkan BottomSheetDialog setelah izin kamera diberikan
+                if (hasCameraPermission()) {
+                    showBottomSheetDialog();
+                }
             } else {
                 Toast.makeText(this, "Izin kamera dibutuhkan untuk menggunakan fitur kamera.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // Method untuk menampilkan BottomSheetDialog
+    private void showBottomSheetDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bsdlocation, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
     }
 
     private void initializeCamera() {
@@ -81,4 +97,9 @@ public class HomeActivity extends AppCompatActivity {
 
         Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
     }
+
+    private boolean hasCameraPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
 }
