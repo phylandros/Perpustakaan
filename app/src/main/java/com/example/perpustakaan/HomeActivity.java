@@ -3,10 +3,14 @@ package com.example.perpustakaan;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,9 +20,11 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -44,6 +50,29 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             initializeCamera();
         }
+        LinearLayout dialogLayout = findViewById(R.id.dialog);
+        BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(dialogLayout);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        // Mendapatkan tinggi layar perangkat dalam piksel
+        int screenHeight = displayMetrics.heightPixels;
+
+        // Menggunakan persentase tertentu dari tinggi layar untuk menentukan peekHeight
+        // Anda bisa menyesuaikan persentasenya sesuai kebutuhan
+        int peekHeightPercentage;
+        // Menggunakan kondisional untuk menetapkan tiga tinggi peek yang berbeda
+        if (screenHeight < 1000) {
+            peekHeightPercentage = (int) (screenHeight * 0.1); // Gunakan 30% dari tinggi layar
+        } else if (screenHeight < 1500) {
+            peekHeightPercentage = (int) (screenHeight * 0.1); // Gunakan 40% dari tinggi layar
+        } else {
+            peekHeightPercentage = (int) (screenHeight * 0.3); // Gunakan 50% dari tinggi layar
+        }
+        // Set peekHeight ke BottomSheetBehavior
+        bottomSheetBehavior.setPeekHeight(peekHeightPercentage);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
     }
 
     private void requestCameraPermission() {
@@ -55,24 +84,12 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initializeCamera();
-
-                // Tampilkan BottomSheetDialog setelah izin kamera diberikan
-                if (hasCameraPermission()) {
-                    showBottomSheetDialog();
-                }
             } else {
                 Toast.makeText(this, "Izin kamera dibutuhkan untuk menggunakan fitur kamera.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    // Method untuk menampilkan BottomSheetDialog
-    private void showBottomSheetDialog() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bsdlocation, null);
-        bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetDialog.show();
-    }
 
     private void initializeCamera() {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
@@ -98,8 +115,5 @@ public class HomeActivity extends AppCompatActivity {
         Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
     }
 
-    private boolean hasCameraPermission() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
 
 }
