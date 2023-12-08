@@ -23,11 +23,17 @@ import androidx.camera.view.PreviewView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.perpustakaan.adapter.AdapterLocation;
+import com.example.perpustakaan.model.LocationDataModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -36,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 123;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private PreviewView previewView;
+    private AdapterLocation adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,27 +59,29 @@ public class HomeActivity extends AppCompatActivity {
         }
         LinearLayout dialogLayout = findViewById(R.id.dialog);
         BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(dialogLayout);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        // Mendapatkan tinggi layar perangkat dalam piksel
-        int screenHeight = displayMetrics.heightPixels;
-
-        // Menggunakan persentase tertentu dari tinggi layar untuk menentukan peekHeight
-        // Anda bisa menyesuaikan persentasenya sesuai kebutuhan
-        int peekHeightPercentage;
-        // Menggunakan kondisional untuk menetapkan tiga tinggi peek yang berbeda
-        if (screenHeight < 1000) {
-            peekHeightPercentage = (int) (screenHeight * 0.1); // Gunakan 30% dari tinggi layar
-        } else if (screenHeight < 1500) {
-            peekHeightPercentage = (int) (screenHeight * 0.1); // Gunakan 40% dari tinggi layar
-        } else {
-            peekHeightPercentage = (int) (screenHeight * 0.3); // Gunakan 50% dari tinggi layar
-        }
-        // Set peekHeight ke BottomSheetBehavior
-        bottomSheetBehavior.setPeekHeight(peekHeightPercentage);
+        bottomSheetBehavior.setPeekHeight(100);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<LocationDataModel> dataList = new ArrayList<>();
+
+// Menambahkan objek LocationDataModel ke dalam dataList
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 1", "Kota A", "Jam 9:00 - 12:30"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 2", "Kota B", "Jam 8:00 - 11:30"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 3", "Kota C", "Jam 10:00 - 13:30"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 4", "Kota D", "Jam 7:30 - 10:00"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 5", "Kota E", "Jam 12:00 - 15:30"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 6", "Kota F", "Jam 11:30 - 14:00"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 7", "Kota F", "Jam 11:30 - 14:00"));
+        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 8", "Kota F", "Jam 11:30 - 14:00"));
+
+
+// Gunakan dataList dalam adapter
+        AdapterLocation adapter = new AdapterLocation(dataList);
+        recyclerView.setAdapter(adapter);
     }
 
     private void requestCameraPermission() {

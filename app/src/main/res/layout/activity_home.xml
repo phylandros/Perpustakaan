@@ -79,8 +79,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:background="@drawable/dialogbg"
-        >
+        android:background="@drawable/dialogbg">
 
         <ImageView
             android:layout_width="100dp"
@@ -126,6 +125,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_above="@+id/buttonPanel"
+
             >
 
             <TextView
@@ -140,29 +141,37 @@
                 android:fontFamily="@font/robotobold"
                 android:textSize="20dp" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:padding="20dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="500dp"
+                android:layout_marginBottom="10dp"
+
+                />
+            </RelativeLayout>
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/buttonPanel"
+            android:layout_below="@+id/layoutVideo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="bottom"
                 android:background="@drawable/shapemasuk"
                 android:textColor="#FFF"
                 android:text="Pinjam Buku"
                 android:textStyle="bold"
-                android:textSize="16dp"
-                />
+                android:textSize="16dp" />
+
         </LinearLayout>
     </LinearLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
