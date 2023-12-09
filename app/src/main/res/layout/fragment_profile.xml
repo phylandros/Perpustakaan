@@ -7,42 +7,51 @@
     android:background="#0766AD"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/container_profile"
+        >
+
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_west_24"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:text="Profile"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="#FFF"/>
+    </LinearLayout>
+
+    <RelativeLayout
         android:id="@+id/toolbarContainer"
+        android:background="@drawable/dialogbg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:src="@drawable/baseline_west_24"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="15dp"
-                android:text="Profile"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:textColor="#FFF"/>
-        </LinearLayout>
 
         <LinearLayout
-            android:background="@drawable/dialogbg"
+            android:id="@+id/dataprofile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -50,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:orientation="vertical">
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -107,92 +115,102 @@
                             android:gravity="center"
                             android:textSize="14dp"/>
 
-                        <View
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:visibility="visible"
-                            android:layout_height="6dp"
-                            android:background="#F3F3F3F3"/>
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="25dp"
+                            >
 
-                        <TextView
-                            android:layout_marginTop="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="No. KTP :"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:textSize="16dp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="13248616515123"
-                            android:textColor="#000"
-                            android:textSize="14dp"/>
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="No. KTP :"
+                                android:textStyle="bold"
+                                android:textColor="#000"
+                                android:textSize="16dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="13248616515123"
+                                android:textColor="#000"
+                                android:textSize="14dp"/>
 
-                        <TextView
-                            android:layout_marginTop="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Alamat :"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:textSize="16dp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Jl. Bekasi Kota"
-                            android:textColor="#000"
-                            android:textSize="14dp"/>
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Alamat :"
+                                android:textStyle="bold"
+                                android:textColor="#000"
+                                android:textSize="16dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jl. Bekasi Kota"
+                                android:textColor="#000"
+                                android:textSize="14dp"/>
 
-                        <TextView
-                            android:layout_marginTop="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Email :"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:textSize="16dp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="test@gmail.com"
-                            android:textColor="#000"
-                            android:textSize="14dp"/>
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Email :"
+                                android:textStyle="bold"
+                                android:textColor="#000"
+                                android:textSize="16dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="test@gmail.com"
+                                android:textColor="#000"
+                                android:textSize="14dp"/>
 
-                        <TextView
-                            android:layout_marginTop="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Password :"
-                            android:textStyle="bold"
-                            android:textColor="#000"
-                            android:textSize="16dp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="**********"
-                            android:textColor="#000"
-                            android:textSize="16dp"/>
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Password :"
+                                android:textStyle="bold"
+                                android:textColor="#000"
+                                android:textSize="16dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:text="**********"
+                                android:textColor="#000"
+                                android:textSize="16dp"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
+
+        </LinearLayout>
             <LinearLayout
+                android:id="@+id/buttonPanel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
 
                 <Button
                     android:id="@+id/btnlogout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:background="@drawable/shapemasuk"
-                    android:text="Keluar"
                     android:textColor="#FFF"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:text="Keluar"
+                    android:textStyle="bold"
+                    android:enabled="false"
+                    android:textSize="16dp" />
             </LinearLayout>
-        </LinearLayout>
+
+
+    </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>
