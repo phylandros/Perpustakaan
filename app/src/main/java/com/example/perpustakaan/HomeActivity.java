@@ -1,5 +1,6 @@
 package com.example.perpustakaan;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -52,7 +53,8 @@ public class HomeActivity extends AppCompatActivity {
     private PreviewView previewView;
     private AdapterLocation adapter;
     private ExecutorService executor = Executors.newSingleThreadExecutor(); // Untuk memproses deteksi QR code
-
+    private Camera camera;
+    private ImageAnalysis imageAnalysis;
     LinearLayout dialogLayout;
     TextView txtkonf;
     Button btnPinjam;
@@ -76,9 +78,22 @@ public class HomeActivity extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopCamera(); // Memanggil method untuk menghentikan kamera
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.coordinator_layout, new ProfileFragment()); // Ganti R.id.container dengan ID yang sesuai dari container fragment Anda
+                fragmentTransaction.replace(R.id.coordinator_layout, new ProfileFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        btnPinjam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopCamera(); // Memanggil method untuk menghentikan kamera
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.coordinator_layout, new PeminjamanBukuFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -189,6 +204,7 @@ public class HomeActivity extends AppCompatActivity {
                             txtkonf.setText("Selamat Datang di " + qrText);
                             btnPinjam.setBackgroundResource(R.drawable.shapemasuk);
                             btnPinjam.setEnabled(Boolean.parseBoolean("true"));
+                            stopCamera();
                         }
                     }
                 });
@@ -222,5 +238,31 @@ public class HomeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executor.shutdown();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopCamera();
+        stopImageAnalysis();
+    }
+
+    private void stopCamera() {
+        if (cameraProviderFuture != null) {
+            cameraProviderFuture.addListener(() -> {
+                try {
+                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                    cameraProvider.unbindAll(); // Menghentikan semua koneksi kamera
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(TAG, "Error stopping camera: " + e.getMessage());
+                }
+            }, ContextCompat.getMainExecutor(this));
+        }
+    }
+
+    private void stopImageAnalysis() {
+        if (imageAnalysis != null) {
+            imageAnalysis.clearAnalyzer();
+        }
     }
 }

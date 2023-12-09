@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Perpustakaan"
         tools:targetApi="31">
         <activity
+            android:name=".PinjamActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -28,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity" />
-
     </application>
 
 </manifest>

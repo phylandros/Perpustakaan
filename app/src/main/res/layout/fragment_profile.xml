@@ -205,7 +205,6 @@
                     android:textColor="#FFF"
                     android:text="Keluar"
                     android:textStyle="bold"
-                    android:enabled="false"
                     android:textSize="16dp" />
             </LinearLayout>
 
