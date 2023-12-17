@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText inpEmail, inpPassword;
     private Button btnMasuk;
 
+    EditText namaReg, emailReg, passReg, conpassReg, noktpReg, alamatReg, notelReg;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +186,69 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class PostRegisterAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String response = "";
+
+            try {
+                URL url = new URL("http://8.219.70.58:5988/users");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                JSONObject postData = new JSONObject();
+                postData.put("nama", params[0]);
+                postData.put("email", params[1]);
+                postData.put("password", params[2]);
+                postData.put("confPassword", params[3]);
+                postData.put("gambar", "gambar"); // Menggunakan placeholder "gambar"
+                postData.put("nip_perpus", String.valueOf(System.currentTimeMillis()));
+                postData.put("ktp", params[4]);
+                postData.put("alamat", params[5]);
+                postData.put("phone", params[6]);
+
+                OutputStream outputStream = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                writer.write(postData.toString());
+                writer.flush();
+                writer.close();
+                outputStream.close();
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    while ((line = br.readLine()) != null) {
+                        response += line;
+                    }
+                    br.close();
+                } else {
+                    response = "";
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Handle response dari server
+            try {
+                JSONObject jsonResponse = new JSONObject(result);
+                // Lakukan sesuatu dengan response JSON dari server
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSON Parse Error", "Error parsing JSON response");
+            }
+        }
+    }
+
+
+
     private void saveAccessToken(String accessToken) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -194,25 +260,51 @@ public class MainActivity extends AppCompatActivity {
         // Tampilkan dialog register (bsdregister)
         dialog.setContentView(R.layout.bsdregister);
         Button btnLanjut = dialog.findViewById(R.id.btnlanjut);
+
+        namaReg = dialog.findViewById(R.id.etNama);
+        emailReg = dialog.findViewById(R.id.etEmail);
+        passReg = dialog.findViewById(R.id.etPassword);
+        conpassReg = dialog.findViewById(R.id.etconPassword);
+
         btnLanjut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                showRegister2Dialog();
+                String nama = namaReg.getText().toString().trim();
+                String email = emailReg.getText().toString().trim();
+                String password = passReg.getText().toString().trim();
+                String conpassword = conpassReg.getText().toString().trim();
+
+                if (!nama.isEmpty() && !email.isEmpty() && !password.isEmpty() && !conpassword.isEmpty()) {
+                    dialog.dismiss();
+                    showRegister2Dialog(nama, email, password, conpassword);
+                } else {
+                    Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.show();
     }
 
-    public void showRegister2Dialog() {
-        // Tampilkan dialog register2 (bsdregister2)
+    public void showRegister2Dialog(String nama, String email, String password, String conpassword) {
         dialog.setContentView(R.layout.bsdregister2);
         Button btnLanjut2 = dialog.findViewById(R.id.btnlanjut2);
+
+        noktpReg = dialog.findViewById(R.id.etNoKtp);
+        alamatReg = dialog.findViewById(R.id.etAlamat);
+        notelReg = dialog.findViewById(R.id.etNotel);
         btnLanjut2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                showRegisterDoneDialog();
+                String ktp = noktpReg.getText().toString().trim();
+                String alamat = alamatReg.getText().toString().trim();
+                String notel = notelReg.getText().toString().trim();
+
+                if (!ktp.isEmpty() && !alamat.isEmpty() && !notel.isEmpty()) {
+                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword, ktp, alamat, notel);
+                    showRegisterDoneDialog();
+                } else {
+                    Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.show();
@@ -222,6 +314,8 @@ public class MainActivity extends AppCompatActivity {
         // Tampilkan dialog register done (bsdregisdone)
         dialog.setContentView(R.layout.bsdregisdone);
         Button btnBacktoLogin = dialog.findViewById(R.id.btnbacklogin);
+
+
         btnBacktoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

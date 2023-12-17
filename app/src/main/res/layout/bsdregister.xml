@@ -45,6 +45,7 @@
 
 
             <EditText
+                android:id="@+id/etNama"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Masukan Nama"
@@ -66,6 +67,7 @@
 
 
             <EditText
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Masukan Email"
@@ -86,9 +88,31 @@
                 android:textSize="16dp"/>
 
             <EditText
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Masukkan Password"
+                android:textColor="#000"
+                android:fontFamily="@font/robotoreg"
+                android:textSize="14dp"
+                android:textColorHint="#000"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Konfirmasi Password"
+                android:layout_marginTop="10dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:fontFamily="@font/robotobold"
+                android:textSize="16dp"/>
+
+            <EditText
+                android:id="@+id/etconPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Masukkan Konfirmasi Password"
                 android:textColor="#000"
                 android:fontFamily="@font/robotoreg"
                 android:textSize="14dp"
