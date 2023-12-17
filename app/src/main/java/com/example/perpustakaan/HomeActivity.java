@@ -1,12 +1,15 @@
 package com.example.perpustakaan;
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -58,6 +61,9 @@ public class HomeActivity extends AppCompatActivity {
     LinearLayout dialogLayout;
     TextView txtkonf;
     Button btnPinjam;
+
+    private boolean isCameraRunning = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +150,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
     private void requestCameraPermission() {
@@ -181,39 +189,57 @@ public class HomeActivity extends AppCompatActivity {
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
+        camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
 
         // Menambahkan analisis gambar untuk mendeteksi QR code
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+        imageAnalysis = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
-        imageAnalysis.setAnalyzer(executor, new ImageAnalysis.Analyzer() {
+        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(this), new ImageAnalysis.Analyzer() {
             @Override
             public void analyze(@NonNull ImageProxy image) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmap = previewView.getBitmap();
-                        String qrText = decodeQRCode(bitmap);
-                        if (qrText != null) {
-                            // Lakukan sesuatu dengan teks QR code yang didapatkan
-                            Toast.makeText(HomeActivity.this, "QR Code: " + qrText, Toast.LENGTH_SHORT).show();
-                            BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(dialogLayout);
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                            txtkonf.setText("Selamat Datang di " + qrText);
-                            btnPinjam.setBackgroundResource(R.drawable.shapemasuk);
-                            btnPinjam.setEnabled(Boolean.parseBoolean("true"));
-                            stopCamera();
-                        }
+                Bitmap bitmap = previewView.getBitmap();
+                if (bitmap != null) {
+                    String qrText = decodeQRCode(bitmap);
+                    if (qrText != null) {
+                        // Show the dialog here
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Set text to textkonfirm TextView with the scanned QR content
+                                TextView txtkonf = findViewById(R.id.textkonfirm);
+                                txtkonf.setText("Selamat datang di perpustakaan " + qrText);
+
+                                // Change the background of btnPinjam to shapemasuk drawable
+                                Button btnPinjam = findViewById(R.id.btnpinjam);
+                                btnPinjam.setBackgroundResource(R.drawable.shapemasuk);
+                                btnPinjam.setEnabled(true);
+                                // Change the BottomSheetBehavior state to expanded when a QR code is detected
+                                BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(dialogLayout);
+                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                                stopCamera();
+                                // Here, you might also update any other UI elements inside the bottom sheet with the scanned QR content
+                            }
+                        });
                     }
-                });
+                }
                 image.close();
             }
         });
 
         cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis);
+
+        preview.setSurfaceProvider(previewOutput -> {
+            ViewGroup parent = (ViewGroup) previewView.getParent();
+            parent.removeView(previewView);
+            parent.addView(previewView, 0);
+
+            preview.setSurfaceProvider(previewView.getSurfaceProvider());
+        });
     }
+
+
 
     // Method untuk mendekode QR code dari gambar Bitmap
     private String decodeQRCode(Bitmap bitmap) {
@@ -243,8 +269,29 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        stopCamera();
+        stopCamera(); // Menghentikan kamera saat aplikasi di-minimize
         stopImageAnalysis();
+        saveCameraStatus(isCameraRunning); // Menyimpan status kamera ke SharedPreferences
+    }
+
+    private void saveCameraStatus(boolean isRunning) {
+        SharedPreferences sharedPreferences = getSharedPreferences("CameraPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isCameraRunning", isRunning);
+        editor.apply();
+    }
+
+    private boolean getSavedCameraStatus() {
+        SharedPreferences sharedPreferences = getSharedPreferences("CameraPrefs", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("isCameraRunning", false);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean savedCameraStatus = getSavedCameraStatus(); // Mendapatkan status kamera dari SharedPreferences
+        if (savedCameraStatus) {
+            initializeCamera(); // Jika sebelumnya kamera sedang berjalan, inisialisasi kamera kembali
+        }
     }
 
     private void stopCamera() {
