@@ -80,6 +80,7 @@
                     android:textColorHint="#000"
                     android:textColor="#000"
                     android:textSize="14dp"
+                    android:inputType="number"
                     />
 
                 <TextView
@@ -100,6 +101,7 @@
                     android:textColorHint="#000"
                     android:textColor="#000"
                     android:textSize="14dp"
+                    android:inputType="text"
                     />
 
                 <TextView
@@ -118,6 +120,7 @@
                     android:textColor="#000"
                     android:textSize="14dp"
                     android:textColorHint="#000"
+                    android:inputType="number"
                     />
             </LinearLayout>
         </LinearLayout>

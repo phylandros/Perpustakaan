@@ -53,6 +53,7 @@
                 android:textColorHint="#000"
                 android:textColor="#000"
                 android:textSize="14dp"
+                android:inputType="text"
                 />
 
             <TextView
@@ -75,6 +76,7 @@
                 android:fontFamily="@font/robotoreg"
                 android:textColor="#000"
                 android:textSize="14dp"
+                android:inputType="textEmailAddress"
                 />
 
             <TextView
@@ -96,6 +98,7 @@
                 android:fontFamily="@font/robotoreg"
                 android:textSize="14dp"
                 android:textColorHint="#000"
+                android:inputType="textPassword"
                 />
 
             <TextView
@@ -117,6 +120,7 @@
                 android:fontFamily="@font/robotoreg"
                 android:textSize="14dp"
                 android:textColorHint="#000"
+                android:inputType="textPassword"
                 />
         </LinearLayout>
         <LinearLayout
