@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,15 +41,8 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    TextView txtUserName;
-    TextView txtNipPerpus;
-    TextView txtKtp;
-    TextView txtAlamat;
-    TextView txtUserEmail;
-    TextView txtUserPassword;
-
-    String emailused;
+    String userId, refreshToken;
+    View view;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -85,22 +77,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Bundle bundle = this.getArguments();
+        Bundle bundle = getArguments();
         if (bundle != null) {
-            String userId = bundle.getString("userid", "");
+            userId = bundle.getString("userid", "");
+            new FetchUserDataTask().execute("http://8.219.70.58:5988/users/" + userId);
 
-            txtUserName = view.findViewById(R.id.nampeng);
-            txtUserName.setText(userId);
-
-            // Gunakan userId untuk membuat URL
-            String apiUrl = "http://8.219.70.58:5988/users/" + userId;
-
-            // Sekarang, lakukan permintaan HTTP ke API dengan URL yang sudah dibuat
         }
-
-
 
         LinearLayout toolbar = view.findViewById(R.id.toolbar);
         toolbar.setOnClickListener(new View.OnClickListener() {
@@ -118,35 +102,37 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                new LogoutTask().execute("http://8.219.70.58:5988/logout");
             }
         });
 
         return view;
     }
 
-    // Tambahkan class AsyncTask di dalam ProfileFragment
 
-    private class FetchUserDataTask extends AsyncTask<String, Void, String> {
+    private class LogoutTask extends AsyncTask<String, Void, Void> {
 
         @Override
-        protected String doInBackground(String... strings) {
-            if (strings.length == 0 || strings[0] == null) {
-                return null;
-            }
-
-            String result = "";
+        protected Void doInBackground(String... urls) {
+            String apiUrl = urls[0];
             HttpURLConnection urlConnection = null;
-            try {
-                URL url = new URL(strings[0]); // Mengambil URL dari parameter AsyncTask
-                urlConnection = (HttpURLConnection) url.openConnection();
 
-                InputStream inputStream = urlConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
+            try {
+                URL url = new URL(apiUrl);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("DELETE");
+
+                // Set headers
+                urlConnection.setRequestProperty("Cookie", "refreshToken="+refreshToken);
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                    // Logout berhasil
+                    Log.d("LogoutTask", "Logout berhasil");
+                } else {
+                    // Logout gagal
+                    Log.e("LogoutTask", "Logout gagal, response code: " + responseCode);
                 }
 
             } catch (IOException e) {
@@ -156,54 +142,87 @@ public class ProfileFragment extends Fragment {
                     urlConnection.disconnect();
                 }
             }
-            return result;
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            // Parsing JSON dan menampilkan data di sini
-            try {
-                JSONObject jsonObject = new JSONObject(s);
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
 
-                // Ambil nilai yang dibutuhkan dari objek JSON dengan pengecekan agar tidak null
-                String userName = jsonObject.has("name") ? jsonObject.optString("name") : "";
-                JSONObject biodata = jsonObject.optJSONObject("biodata");
-                String nipPerpus = (biodata != null && biodata.has("nip_perpus")) ? biodata.optString("nip_perpus") : "";
-                String ktp = (biodata != null && biodata.has("ktp")) ? biodata.optString("ktp") : "";
-                String alamat = (biodata != null && biodata.has("alamat")) ? biodata.optString("alamat") : "";
-                String userEmail = jsonObject.has("email") ? jsonObject.optString("email") : "";
-                String userPassword = jsonObject.has("password") ? jsonObject.optString("password") : "";
-
-                // Tampilkan nilai-nilai ini dalam TextView yang sesuai
-                txtUserName = getView().findViewById(R.id.nampeng);
-                txtNipPerpus = getView().findViewById(R.id.noang);
-                txtKtp = getView().findViewById(R.id.noktp);
-                txtAlamat = getView().findViewById(R.id.alamat);
-                txtUserEmail = getView().findViewById(R.id.email);
-                txtUserPassword = getView().findViewById(R.id.password);
-
-                // Set nilai TextView sesuai data yang didapat
-                txtUserName.setText(userName);
-                txtNipPerpus.setText(nipPerpus);
-                txtKtp.setText(ktp);
-                txtAlamat.setText(alamat);
-                txtUserEmail.setText(userEmail);
-                txtUserPassword.setText(userPassword);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                // Tambahkan penanganan kesalahan jika terjadi kesalahan dalam pengolahan JSON
-            }
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            getActivity().finish();
         }
     }
 
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        // Panggil AsyncTask untuk mengambil data saat fragment dibuat
-        new FetchUserDataTask().execute();
+    private class FetchUserDataTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String apiUrl = urls[0];
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL url = new URL(apiUrl);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String userData) {
+            super.onPostExecute(userData);
+            try {
+                JSONObject jsonObject = new JSONObject(userData);
+                String name = jsonObject.getString("name");
+                String email = jsonObject.getString("email");
+                refreshToken = jsonObject.getString("refreshToken");
+                JSONObject biodataObject = jsonObject.getJSONObject("biodata");
+                String ktp = biodataObject.getString("ktp");
+                String nipPerpus = biodataObject.getString("nip_perpus");
+                String alamat = biodataObject.getString("alamat");
+                String phone = biodataObject.getString("phone");
+
+                TextView txNamapengguna = view.findViewById(R.id.nampeng);
+                TextView txNoanggota = view.findViewById(R.id.noang);
+                TextView txNoktp = view.findViewById(R.id.noktp);
+                TextView txAlamat = view.findViewById(R.id.alamat);
+                TextView txEmail = view.findViewById(R.id.email);
+                TextView txPassword = view.findViewById(R.id.password);
+
+                txNamapengguna.setText(name);
+                txNoanggota.setText(nipPerpus);
+                txNoktp.setText(ktp);
+                txAlamat.setText(alamat);
+                txEmail.setText(email);
+                txPassword.setText("*******");
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
 }

@@ -158,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString("accessToken", accessToken);
                             editor.apply();
                             JSONObject data = jsonResponse.getJSONObject("data");
-                            if (data.has("name") && data.has("email") && data.has("userId")) {
+                            if (data.has("userId") && data.has("name") && data.has("email")) {
+                                String userId = data.getString("userId");
                                 String name = data.getString("name");
                                 String email = data.getString("email");
-                                String userId = data.getString("userId");
                                 editor.putString("name", name);
                                 editor.putString("email", email);
                                 editor.putString("userid", userId);

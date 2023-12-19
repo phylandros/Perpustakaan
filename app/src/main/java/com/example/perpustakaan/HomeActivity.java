@@ -87,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         String name = sharedPreferences.getString("name", "");
         String email = sharedPreferences.getString("email","");
         String userid = sharedPreferences.getString("userid","");
+        String accesstoken = sharedPreferences.getString("accessToken","");
         TextView namaUser = findViewById(R.id.namauser);
         namaUser.setText(name);
         Log.d("SharedPreferences", "Nilai name: " + name);
@@ -108,14 +109,13 @@ public class HomeActivity extends AppCompatActivity {
                 stopCamera(); // Memanggil method untuk menghentikan kamera
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                // Mengirim data email ke ProfileFragment
                 ProfileFragment profileFragment = new ProfileFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("email", email);
-                bundle.putString("userid", userid);
+                bundle.putString("userid", userid); // Mengirim data userid ke ProfileFragment
+                bundle.putString("accessToken", accesstoken);
                 profileFragment.setArguments(bundle);
 
-                fragmentTransaction.replace(R.id.coordinator_layout, new ProfileFragment());
+                fragmentTransaction.replace(R.id.coordinator_layout, profileFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
