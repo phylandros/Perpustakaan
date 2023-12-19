@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -43,6 +44,16 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -70,6 +81,16 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
+        fetchDataFromAPI();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String name = sharedPreferences.getString("name", "");
+        String email = sharedPreferences.getString("email","");
+        String userid = sharedPreferences.getString("userid","");
+        TextView namaUser = findViewById(R.id.namauser);
+        namaUser.setText(name);
+        Log.d("SharedPreferences", "Nilai name: " + name);
+
         previewView = findViewById(R.id.previewView);
         txtkonf = findViewById(R.id.textkonfirm);
         btnPinjam = findViewById(R.id.btnpinjam);
@@ -87,6 +108,13 @@ public class HomeActivity extends AppCompatActivity {
                 stopCamera(); // Memanggil method untuk menghentikan kamera
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                // Mengirim data email ke ProfileFragment
+                ProfileFragment profileFragment = new ProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("email", email);
+                bundle.putString("userid", userid);
+                profileFragment.setArguments(bundle);
+
                 fragmentTransaction.replace(R.id.coordinator_layout, new ProfileFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -127,31 +155,6 @@ public class HomeActivity extends AppCompatActivity {
         bottomSheetBehavior.setPeekHeight(peekHeightPercentage);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        List<LocationDataModel> dataList = new ArrayList<>();
-
-// Menambahkan objek LocationDataModel ke dalam dataList
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 1", "Kota A", "Jam 9:00 - 12:30"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 2", "Kota B", "Jam 8:00 - 11:30"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 3", "Kota C", "Jam 10:00 - 13:30"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 4", "Kota D", "Jam 7:30 - 10:00"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 5", "Kota E", "Jam 12:00 - 15:30"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 6", "Kota F", "Jam 11:30 - 14:00"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 7", "Kota F", "Jam 11:30 - 14:00"));
-        dataList.add(new LocationDataModel(R.drawable.image, "Perpus Kampus 8", "Kota F", "Jam 11:30 - 14:00"));
-
-
-// Gunakan dataList dalam adapter
-        AdapterLocation adapter = new AdapterLocation(dataList);
-        recyclerView.setAdapter(adapter);
-
-
-
-
-
     }
 
     private void requestCameraPermission() {
@@ -168,6 +171,70 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+    private void fetchDataFromAPI() {
+        new FetchData().execute("http://8.219.70.58:5988/perpus");
+    }
+
+    public class FetchData extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(urls[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            processJSONData(s);
+        }
+    }
+    private void processJSONData(String jsonData) {
+        try {
+            JSONArray jsonArray = new JSONArray(jsonData);
+
+            List<LocationDataModel> dataList = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                String name = jsonObject.getString("nama");
+                String address = jsonObject.getString("alamat");
+                String operatingHours = jsonObject.getString("jam_operasional");
+                Integer image = R.drawable.image;
+                dataList.add(new LocationDataModel(image,name, address, operatingHours));
+            }
+
+            runOnUiThread(() -> {
+                RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+                AdapterLocation adapter = new AdapterLocation(dataList);
+                recyclerView.setAdapter(adapter);
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     private void initializeCamera() {
@@ -208,8 +275,8 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 // Set text to textkonfirm TextView with the scanned QR content
-                                TextView txtkonf = findViewById(R.id.textkonfirm);
-                                txtkonf.setText("Selamat datang di perpustakaan " + qrText);
+
+                                txtkonf.setText("Selamat datang di " + qrText);
 
                                 // Change the background of btnPinjam to shapemasuk drawable
                                 Button btnPinjam = findViewById(R.id.btnpinjam);

@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.perpustakaan.Util.HttpHandler;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
@@ -65,17 +64,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.getWindow().setDimAmount(0.0f);
 
-    }
-
-    private void processJSONData(String jsonData) {
-        try {
-            JSONArray jsonArray = new JSONArray(jsonData);
-
-            // Lakukan sesuatu dengan data JSON, seperti login
-            // ...
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void showLoginDialog() {
@@ -165,15 +153,27 @@ public class MainActivity extends AppCompatActivity {
                     if (jsonResponse.has("accessToken")) {
                         String accessToken = jsonResponse.getString("accessToken");
                         if (accessToken != null && !accessToken.isEmpty()) {
-                            // Simpan accessToken (misalnya ke SharedPreferences)
-                            saveAccessToken(accessToken);
-
-                            // Pindah ke HomeActivity
+                            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("accessToken", accessToken);
+                            editor.apply();
+                            JSONObject data = jsonResponse.getJSONObject("data");
+                            if (data.has("name") && data.has("email") && data.has("userId")) {
+                                String name = data.getString("name");
+                                String email = data.getString("email");
+                                String userId = data.getString("userId");
+                                editor.putString("name", name);
+                                editor.putString("email", email);
+                                editor.putString("userid", userId);
+                                editor.apply();
+                            }
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             startActivity(intent);
-                            finish(); // Optional: Menutup MainActivity agar tidak kembali ke sini dari tombol back
+                            finish();
                         }
-                    } else {
+
+                    }
+                    else {
                         Toast.makeText(MainActivity.this, "Gagal mendapatkan accessToken", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("JSON Parse Error", "Error parsing JSON response");
                 }
             } else {
+                Toast.makeText(MainActivity.this,"Username dan password salah",Toast.LENGTH_SHORT).show();
                 Log.e("Connection Error", "No data received from server");
             }
         }
@@ -245,15 +246,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("JSON Parse Error", "Error parsing JSON response");
             }
         }
-    }
-
-
-
-    private void saveAccessToken(String accessToken) {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("accessToken", accessToken);
-        editor.apply();
     }
 
     public void showRegisterDialog() {
@@ -333,4 +325,8 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
         }
     }
+
+
+
+
 }

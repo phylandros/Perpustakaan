@@ -99,6 +99,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/nampeng"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Nama Pengguna"
@@ -107,6 +108,7 @@
                             android:gravity="center"
                             android:textSize="18dp"/>
                         <TextView
+                            android:id="@+id/noang"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="No Anggota : "
@@ -131,6 +133,7 @@
                                 android:textColor="#000"
                                 android:textSize="16dp"/>
                             <TextView
+                                android:id="@+id/noktp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="13248616515123"
@@ -146,6 +149,7 @@
                                 android:textColor="#000"
                                 android:textSize="16dp"/>
                             <TextView
+                                android:id="@+id/alamat"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Jl. Bekasi Kota"
@@ -161,6 +165,7 @@
                                 android:textColor="#000"
                                 android:textSize="16dp"/>
                             <TextView
+                                android:id="@+id/email"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="test@gmail.com"
@@ -176,6 +181,7 @@
                                 android:textColor="#000"
                                 android:textSize="16dp"/>
                             <TextView
+                                android:id="@+id/password"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
