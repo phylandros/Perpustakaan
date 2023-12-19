@@ -267,8 +267,12 @@ public class MainActivity extends AppCompatActivity {
                 String conpassword = conpassReg.getText().toString().trim();
 
                 if (!nama.isEmpty() && !email.isEmpty() && !password.isEmpty() && !conpassword.isEmpty()) {
-                    dialog.dismiss();
-                    showRegister2Dialog(nama, email, password, conpassword);
+                    if (password.equals(conpassword)) {
+                        dialog.dismiss();
+                        showRegister2Dialog(nama, email, password, conpassword);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Password tidak cocok", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
                 }
