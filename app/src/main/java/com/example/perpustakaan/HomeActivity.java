@@ -127,6 +127,12 @@ public class HomeActivity extends AppCompatActivity {
                 stopCamera(); // Memanggil method untuk menghentikan kamera
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                PeminjamanBukuFragment pinjamFragment = new PeminjamanBukuFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", userid);
+                pinjamFragment.setArguments(bundle);
+
                 fragmentTransaction.replace(R.id.coordinator_layout, new PeminjamanBukuFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

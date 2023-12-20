@@ -52,10 +52,10 @@
                     android:orientation="vertical"
                     >
                     <TextView
+                        android:id="@+id/namperpus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nama Perpustakaan setelah absensi"
-
+                        android:text="Nama Perpustakaan"
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="15dp"
                         android:textStyle="bold"
@@ -84,6 +84,7 @@
                             >
 
                             <TextView
+                                android:id="@+id/nampengpem"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Nama Pengguna"
@@ -93,6 +94,7 @@
                                 android:textColor="#000"
                                 />
                             <TextView
+                                android:id="@+id/noangpem"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="No. Anggota "
