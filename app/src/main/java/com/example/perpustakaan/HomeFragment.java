@@ -1,16 +1,16 @@
 package com.example.perpustakaan;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,24 +26,25 @@ import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PeminjamanBukuFragment#newInstance} factory method to
+ * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PeminjamanBukuFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private String api = BuildConfig.API;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String userId;
-    private Integer perpusId;
     private View view;
-    public PeminjamanBukuFragment() {
+    String userid, accesstoken;
+    Integer perpusId;
+    private String api = BuildConfig.API;
+
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -53,17 +54,17 @@ public class PeminjamanBukuFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PeminjamanBukuFragment.
+     * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PeminjamanBukuFragment newInstance(String param1, String param2) {
-        PeminjamanBukuFragment fragment = new PeminjamanBukuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static HomeFragment newInstance(String param1, String param2) {
+//        HomeFragment fragment = new HomeFragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,30 +75,53 @@ public class PeminjamanBukuFragment extends Fragment {
         }
     }
 
+    public static HomeFragment newInstance(String userId, String accessToken) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putString("userid", userId);
+        args.putString("accessToken", accessToken);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_peminjaman_buku, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            userId = bundle.getString("userid", "");
-            perpusId = bundle.getInt("perpusid", 0);
-            new FetchUserDataTask().execute(api+"/users/" + userId);
-            new FetchPerpusDataTask().execute(api+"/perpus/"+perpusId);
+            userid = bundle.getString("userid", "");
+            new FetchUserDataTask().execute(api+"/users/" + userid);
+
+//            new PeminjamanBukuFragment.FetchPerpusDataTask().execute(api+"/perpus/"+perpusId);
 
         }
 
-        LinearLayout toolbar = view.findViewById(R.id.toolbar);
+        LinearLayout toolbar = view.findViewById(R.id.toolbarContainer);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Kembali ke HomeActivity
-//                Intent intent = new Intent(getActivity(), HomeActivity.class);
-//                startActivity(intent);
+                FragmentManager fragmentManager = getChildFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                ProfileFragment profileFragment = new ProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", userid); // Mengirim data userid ke ProfileFragment
+                bundle.putString("accessToken", accesstoken);
+                profileFragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.fragment_home, profileFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
+
+
+
 
         return view;
     }
@@ -138,14 +162,8 @@ public class PeminjamanBukuFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(userData);
                 String name = jsonObject.getString("name");
-                JSONObject biodataObject = jsonObject.getJSONObject("biodata");
-                String nipPerpus = biodataObject.getString("nip_perpus");
-
-                TextView txNamapengguna = view.findViewById(R.id.nampengpem);
-                TextView txNoanggota = view.findViewById(R.id.noangpem);
-
+                TextView txNamapengguna = view.findViewById(R.id.namauser);
                 txNamapengguna.setText(name);
-                txNoanggota.setText(nipPerpus);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -153,51 +171,4 @@ public class PeminjamanBukuFragment extends Fragment {
 
         }
     }
-
-    private class FetchPerpusDataTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String apiUrl = urls[0];
-            StringBuilder result = new StringBuilder();
-            HttpURLConnection urlConnection = null;
-
-            try {
-                URL url = new URL(apiUrl);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
-                BufferedReader bufferedReader = new BufferedReader(reader);
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    result.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-
-            return result.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String perpusData) {
-            super.onPostExecute(perpusData);
-            try {
-                JSONObject jsonObject = new JSONObject(perpusData);
-                String perpusName = jsonObject.getString("nama");
-                TextView txnamaperpus = view.findViewById(R.id.namperpus);
-                txnamaperpus.setText(perpusName);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-
 }

@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,10 +93,16 @@ public class ProfileFragment extends Fragment {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Kembali ke HomeActivity
-                Intent intent = new Intent(getActivity(), HomeActivity.class);
-                startActivity(intent);
+                HomeFragment homeFragment = new HomeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", userId);
+                homeFragment.setArguments(bundle);
 
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_home, homeFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 

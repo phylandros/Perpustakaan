@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
     android:background="#0766AD"
+    android:orientation="vertical"
     android:id="@+id/coordinator_layout"
     >
     <LinearLayout
@@ -39,114 +40,18 @@
                 android:textSize="16dp"
                 android:textColor="#FFF"/>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/undertoolbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/shapehome">
-
-            <TextView
-                android:id="@+id/textkonfirm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Pindai kode QR untuk presensi \nperpustakaan"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#EEEE"/>
-        </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/container"
+    <LinearLayout
+        android:id="@+id/barbawah"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbarContainer"
-        android:layout_marginTop="120dp">
-
-        <androidx.camera.view.PreviewView
-            android:id="@+id/previewView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <View
-            android:id="@+id/scanBox"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:background="@drawable/scan_box_background" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/dialog"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:gravity="bottom"
         android:background="@drawable/dialogbg"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
         >
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="-15dp"
-            android:layout_marginTop="-10dp"
-            android:background="@drawable/ic_round_remove_24"
-            android:layout_gravity="center|top"
-            android:scaleType="centerCrop"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-             <TextView
-                 android:id="@+id/createText"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:textAlignment="viewStart"
-                 android:text="Mau kemana hari ini?"
-                 android:padding="8dp"
-                 android:textColor="#169FE3"
-                 android:layout_marginStart="12dp"
-                 android:layout_marginTop="5dp"
-                 android:fontFamily="@font/robotobold"
-                 android:textSize="20dp" />
-
-            <androidx.appcompat.widget.SearchView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginLeft="13dp"
-                android:background="@drawable/searchbar"/>
-         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/layoutVideo"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_above="@+id/buttonPanel">
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:textAlignment="viewStart"
-                 android:text="Perpustakaan terdekat"
-                 android:padding="8dp"
-                 android:textColor="#169FE3"
-                 android:layout_marginStart="12dp"
-                 android:layout_marginTop="5dp"
-                 android:fontFamily="@font/robotobold"
-                 android:textSize="20dp" />
-             <androidx.recyclerview.widget.RecyclerView
-                 android:id="@+id/recyclerView"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginBottom="10dp"/>
-        </LinearLayout>
         <LinearLayout
             android:id="@+id/buttonPanel"
             android:layout_below="@+id/layoutVideo"
@@ -159,13 +64,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@drawable/shapedisable"
+                android:background="@drawable/shapemasuk"
                 android:textColor="#FFF"
                 android:text="Pinjam Buku"
                 android:textStyle="bold"
-                android:enabled="false"
                 android:textSize="16dp" />
         </LinearLayout>
 
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

@@ -1,6 +1,8 @@
 package com.example.perpustakaan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText inpEmail, inpPassword;
     private Button btnMasuk;
-
+    String userId, accessToken;
     EditText namaReg, emailReg, passReg, conpassReg, noktpReg, alamatReg, notelReg;
 
 
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonResponse = new JSONObject(jsonData);
                     if (jsonResponse.has("accessToken")) {
-                        String accessToken = jsonResponse.getString("accessToken");
+                        accessToken = jsonResponse.getString("accessToken");
                         if (accessToken != null && !accessToken.isEmpty()) {
                             SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -160,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
                             editor.apply();
                             JSONObject data = jsonResponse.getJSONObject("data");
                             if (data.has("userId") && data.has("name") && data.has("email")) {
-                                String userId = data.getString("userId");
+                                userId = data.getString("userId");
+
                                 String name = data.getString("name");
                                 String email = data.getString("email");
                                 editor.putString("name", name);
@@ -168,9 +171,13 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putString("userid", userId);
                                 editor.apply();
                             }
-                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
+                            HomeFragment homeFragment = HomeFragment.newInstance(userId,accessToken);
+                            FragmentManager fragmentManager = getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.container_home, homeFragment);
+                            fragmentTransaction.commit();
+                            dialog.dismiss();
+                            Toast.makeText(MainActivity.this, "Login Berhasil", Toast.LENGTH_SHORT).show();
                         }
 
                     }

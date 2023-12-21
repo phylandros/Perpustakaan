@@ -75,16 +75,22 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtkonf;
     private Button btnPinjam;
     private int idperpus;
-
+    String role;
     private boolean isCameraRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_home);
+        fetchUserFromAPI();
+        if (role =="anggota"){
+            setContentView(R.layout.activity_home);
+        } else {
+
+        }
 
         fetchDataFromAPI();
+
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String name = sharedPreferences.getString("name", "");
@@ -95,8 +101,8 @@ public class HomeActivity extends AppCompatActivity {
         namaUser.setText(name);
         Log.d("SharedPreferences", "Nilai name: " + name);
 
-        previewView = findViewById(R.id.previewView);
-        txtkonf = findViewById(R.id.textkonfirm);
+//        previewView = findViewById(R.id.previewView);
+//        txtkonf = findViewById(R.id.textkonfirm);
         btnPinjam = findViewById(R.id.btnpinjam);
 
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -146,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        dialogLayout = findViewById(R.id.dialog);
+//        dialogLayout = findViewById(R.id.dialog);
         BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(dialogLayout);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -189,6 +195,53 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchDataFromAPI() {
         new FetchData().execute(api+"/perpus");
     }
+    private void fetchUserFromAPI() {
+        new FetchUserDataTask().execute(api+"/users");
+    }
+
+    private class FetchUserDataTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String apiUrl = urls[0];
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL url = new URL(apiUrl);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String userData) {
+            super.onPostExecute(userData);
+            try {
+                JSONObject jsonObject = new JSONObject(userData);
+                role = jsonObject.getString("role");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
     public class FetchData extends AsyncTask<String, Void, String> {
 
@@ -239,11 +292,11 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             runOnUiThread(() -> {
-                RecyclerView recyclerView = findViewById(R.id.recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//                RecyclerView recyclerView = findViewById(R.id.recyclerView);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
                 AdapterLocation adapter = new AdapterLocation(dataList);
-                recyclerView.setAdapter(adapter);
+//                recyclerView.setAdapter(adapter);
 
                 adapter.setOnItemClickListener(new AdapterLocation.OnItemClickListener() {
                     @Override
