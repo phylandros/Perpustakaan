@@ -38,6 +38,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
     Button btnWelkom;
     BottomSheetDialog dialog;
+    String api = BuildConfig.API;
 
     private EditText inpEmail, inpPassword;
     private Button btnMasuk;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             String jsonData = "";
 
             try {
-                URL url = new URL("http://8.219.70.58:5988/login");
+                URL url = new URL(api+"/login");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json");
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             String response = "";
 
             try {
-                URL url = new URL("http://8.219.70.58:5988/users");
+                URL url = new URL(api+"/users");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json");

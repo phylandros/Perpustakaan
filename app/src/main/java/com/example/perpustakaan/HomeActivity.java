@@ -63,15 +63,18 @@ import java.util.concurrent.Executors;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private static final int REQUEST_CAMERA_PERMISSION = 123;
+    private String api = BuildConfig.API;
+
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private PreviewView previewView;
     private AdapterLocation adapter;
     private ExecutorService executor = Executors.newSingleThreadExecutor(); // Untuk memproses deteksi QR code
     private Camera camera;
     private ImageAnalysis imageAnalysis;
-    LinearLayout dialogLayout;
-    TextView txtkonf;
-    Button btnPinjam;
+    private LinearLayout dialogLayout;
+    private TextView txtkonf;
+    private Button btnPinjam;
+    private int idperpus;
 
     private boolean isCameraRunning = false;
 
@@ -109,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
                 stopCamera(); // Memanggil method untuk menghentikan kamera
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
                 ProfileFragment profileFragment = new ProfileFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("userid", userid); // Mengirim data userid ke ProfileFragment
@@ -128,12 +132,14 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                PeminjamanBukuFragment pinjamFragment = new PeminjamanBukuFragment();
+                PeminjamanBukuFragment peminjamanBukuFragment = new PeminjamanBukuFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("userid", userid);
-                pinjamFragment.setArguments(bundle);
+                bundle.putString("userid", userid); // Mengirim data userid ke ProfileFragment
+                bundle.putString("accessToken", accesstoken);
+                bundle.putInt("perpusid", idperpus);
+                peminjamanBukuFragment.setArguments(bundle);
 
-                fragmentTransaction.replace(R.id.coordinator_layout, new PeminjamanBukuFragment());
+                fragmentTransaction.replace(R.id.coordinator_layout, peminjamanBukuFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -177,8 +183,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
     private void fetchDataFromAPI() {
-        new FetchData().execute("http://8.219.70.58:5988/perpus");
+        new FetchData().execute(api+"/perpus");
     }
 
     public class FetchData extends AsyncTask<String, Void, String> {
@@ -221,12 +230,12 @@ public class HomeActivity extends AppCompatActivity {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-
+                Integer perpusid = jsonObject.getInt("perpus_id");
                 String name = jsonObject.getString("nama");
                 String address = jsonObject.getString("alamat");
                 String operatingHours = jsonObject.getString("jam_operasional");
                 Integer image = R.drawable.image;
-                dataList.add(new LocationDataModel(image,name, address, operatingHours));
+                dataList.add(new LocationDataModel(image,perpusid,name, address, operatingHours));
             }
 
             runOnUiThread(() -> {
@@ -235,6 +244,18 @@ public class HomeActivity extends AppCompatActivity {
 
                 AdapterLocation adapter = new AdapterLocation(dataList);
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new AdapterLocation.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        LocationDataModel clickedItem = dataList.get(position);
+                        String nama = clickedItem.getTitle();
+                        idperpus = clickedItem.getPerpusid();
+                        txtkonf.setText("Selamat datang di " + nama );
+                        btnPinjam.setBackgroundResource(R.drawable.shapemasuk);
+                        btnPinjam.setEnabled(true);
+                    }
+                });
             });
         } catch (JSONException e) {
             e.printStackTrace();
@@ -313,7 +334,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     // Method untuk mendekode QR code dari gambar Bitmap
     private String decodeQRCode(Bitmap bitmap) {
         String decodedText = null;
@@ -339,13 +359,7 @@ public class HomeActivity extends AppCompatActivity {
         executor.shutdown();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopCamera(); // Menghentikan kamera saat aplikasi di-minimize
-        stopImageAnalysis();
-        saveCameraStatus(isCameraRunning); // Menyimpan status kamera ke SharedPreferences
-    }
+
 
     private void saveCameraStatus(boolean isRunning) {
         SharedPreferences sharedPreferences = getSharedPreferences("CameraPrefs", Context.MODE_PRIVATE);
@@ -361,11 +375,21 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        boolean savedCameraStatus = getSavedCameraStatus(); // Mendapatkan status kamera dari SharedPreferences
+        boolean savedCameraStatus = getSavedCameraStatus();
         if (savedCameraStatus) {
-            initializeCamera(); // Jika sebelumnya kamera sedang berjalan, inisialisasi kamera kembali
+            initializeCamera();
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopCamera(); // Menghentikan kamera saat aplikasi di-minimize
+        stopImageAnalysis();
+        saveCameraStatus(isCameraRunning); // Menyimpan status kamera ke SharedPreferences
+    }
+
+
 
     private void stopCamera() {
         if (cameraProviderFuture != null) {

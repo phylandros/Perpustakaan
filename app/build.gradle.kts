@@ -14,12 +14,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API", "\"${project.findProperty("API_WEB_SERVER")}\"")
+
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        buildFeatures {
+            buildConfig = true
         }
     }
     compileOptions {

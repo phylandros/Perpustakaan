@@ -20,9 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Perpustakaan"
         tools:targetApi="31">
-        <activity
-            android:name=".PinjamActivity"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"

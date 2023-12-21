@@ -41,8 +41,9 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    String userId, refreshToken;
-    View view;
+    private String userId, refreshToken;
+    private View view;
+    private String api = BuildConfig.API;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -82,7 +83,7 @@ public class ProfileFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             userId = bundle.getString("userid", "");
-            new FetchUserDataTask().execute("http://8.219.70.58:5988/users/" + userId);
+            new FetchUserDataTask().execute(api+"/users/" + userId);
 
         }
 
@@ -102,7 +103,7 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new LogoutTask().execute("http://8.219.70.58:5988/logout");
+                new LogoutTask().execute(api+"/logout");
             }
         });
 

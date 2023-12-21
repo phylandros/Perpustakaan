@@ -3,6 +3,7 @@ package com.example.perpustakaan.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,15 @@ import java.util.List;
 public class AdapterLocation extends RecyclerView.Adapter<AdapterLocation.ViewHolder> {
 
     private List<LocationDataModel> mData;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
@@ -50,6 +60,18 @@ public class AdapterLocation extends RecyclerView.Adapter<AdapterLocation.ViewHo
         holder.textViewTitle.setText(currentItem.getTitle());
         holder.textViewLocation.setText(currentItem.getLocation());
         holder.textViewSchedule.setText(currentItem.getSchedule());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        mListener.onItemClick(position);
+                    }
+                }
+            }
+        });
     }
 
     @Override

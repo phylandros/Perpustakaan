@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,14 @@ public class PeminjamanBukuFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private String api = BuildConfig.API;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private String userId;
-    View view;
+    private Integer perpusId;
+    private View view;
     public PeminjamanBukuFragment() {
         // Required empty public constructor
     }
@@ -81,7 +83,9 @@ public class PeminjamanBukuFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             userId = bundle.getString("userid", "");
-            new FetchUserDataTask().execute("http://8.219.70.58:5988/users/" + userId);
+            perpusId = bundle.getInt("perpusid", 0);
+            new FetchUserDataTask().execute(api+"/users/" + userId);
+            new FetchPerpusDataTask().execute(api+"/perpus/"+perpusId);
 
         }
 
@@ -149,4 +153,51 @@ public class PeminjamanBukuFragment extends Fragment {
 
         }
     }
+
+    private class FetchPerpusDataTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String apiUrl = urls[0];
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL url = new URL(apiUrl);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String perpusData) {
+            super.onPostExecute(perpusData);
+            try {
+                JSONObject jsonObject = new JSONObject(perpusData);
+                String perpusName = jsonObject.getString("nama");
+                TextView txnamaperpus = view.findViewById(R.id.namperpus);
+                txnamaperpus.setText(perpusName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 }
