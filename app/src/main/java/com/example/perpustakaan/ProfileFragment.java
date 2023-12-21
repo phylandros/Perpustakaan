@@ -158,11 +158,11 @@ public class ProfileFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
             Intent intent = new Intent(getActivity(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             getActivity().finish();
+            Toast.makeText(getActivity(),"Anda Telah Logout",Toast.LENGTH_SHORT).show();
         }
     }
 
