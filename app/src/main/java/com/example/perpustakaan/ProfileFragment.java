@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
 
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_home, homeFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
+                fragmentTransaction.replace(R.id.frame_profile, homeFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

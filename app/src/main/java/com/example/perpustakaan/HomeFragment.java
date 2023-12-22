@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -48,8 +47,8 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private View view;
-    String userid, accesstoken, role;
-    Integer perpusId;
+    private String userid, accesstoken, role;
+    private Integer perpusId;
     private String api = BuildConfig.API;
     private RecyclerView recyclerView;
     private PustakawanAdapter pustakawanAdapter;
@@ -104,7 +103,7 @@ public class HomeFragment extends Fragment {
                 bundle.putString("accessToken", accesstoken);
                 profileFragment.setArguments(bundle);
 
-                fragmentTransaction.replace(R.id.fragment_home, profileFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
+                fragmentTransaction.replace(R.id.frame_home, profileFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

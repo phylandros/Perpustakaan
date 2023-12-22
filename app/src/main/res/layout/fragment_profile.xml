@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment"
     android:background="#0766AD"
+    android:id="@+id/frame_profile"
     >
 
     <LinearLayout
@@ -213,7 +214,6 @@
                     android:textStyle="bold"
                     android:textSize="16dp" />
             </LinearLayout>
-
 
     </RelativeLayout>
     </LinearLayout>
