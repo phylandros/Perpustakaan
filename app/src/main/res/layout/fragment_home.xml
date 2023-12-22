@@ -46,7 +46,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/anggota"
+            android:id="@+id/dashanggota"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
@@ -60,16 +60,38 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pustakawan"
-            android:visibility="visible"
+            android:id="@+id/dashpustakawan"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom"
             android:background="@drawable/dialogbg"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical"
             >
             <!--            MULAI KODE BUAT ISI DI TEMPAT KOSONG PUSTAKAWAN-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dashboard"
+                    android:layout_margin="25dp"
+                    android:textStyle="bold"
+                    android:textColor="#0766AD"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pustakawan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
     </LinearLayout>
