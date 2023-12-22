@@ -115,8 +115,10 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         pustakawanAdapter = new PustakawanAdapter(getContext(), pustakawanList);
         recyclerView.setAdapter(pustakawanAdapter);
-        pustakawanList.add(new PustakawanModel("Nama Pustakawan 1", "URL_GAMBAR_1"));
-        pustakawanList.add(new PustakawanModel("Nama Pustakawan 2", "URL_GAMBAR_2"));
+        pustakawanList.add(new PustakawanModel("Buku", R.drawable.image));
+        pustakawanList.add(new PustakawanModel("Verifikasi", R.drawable.image));
+        pustakawanList.add(new PustakawanModel("Peminjaman", R.drawable.image));
+        pustakawanList.add(new PustakawanModel("Pengembalian", R.drawable.image));
         pustakawanAdapter.notifyDataSetChanged();
 
 

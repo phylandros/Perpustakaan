@@ -19,32 +19,35 @@ import java.util.List;
 
 public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.PustakawanViewHolder> {
 
-    private Context mContext;
-    private List<PustakawanModel> pustakawanList; // Ganti dengan model yang sesuai
+    private Context context;
+    private List<PustakawanModel> pustakawanList;
 
     public PustakawanAdapter(Context context, List<PustakawanModel> pustakawanList) {
-        this.mContext = context;
+        this.context = context;
         this.pustakawanList = pustakawanList;
     }
 
     @NonNull
     @Override
     public PustakawanViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.cardview_pustakawan, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_pustakawan, parent, false);
         return new PustakawanViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PustakawanViewHolder holder, int position) {
-        PustakawanModel currentPustakawan = pustakawanList.get(position);
+        PustakawanModel pustakawan = pustakawanList.get(position);
 
-        // Set data pustakawan ke tampilan CardView di sini
-        holder.namaPustakawan.setText(currentPustakawan.getNama());
+        // Set text to TextView
+        holder.textView.setText(pustakawan.getName());
 
-        // Menggunakan Glide untuk menampilkan gambar (ganti dengan URL gambar yang sesuai)
-        Glide.with(mContext)
-                .load(currentPustakawan.getGambarURL())
-                .into(holder.gambarPustakawan);
+        // Load image using Glide from resource drawable
+        Glide.with(context)
+                .load(pustakawan.getImageResource())
+                .placeholder(R.drawable.image)
+                .error(R.drawable.image)
+                .into(holder.imageView);
+
     }
 
     @Override
@@ -53,13 +56,13 @@ public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.Pu
     }
 
     public static class PustakawanViewHolder extends RecyclerView.ViewHolder {
-        ImageView gambarPustakawan;
-        TextView namaPustakawan;
+        private ImageView imageView;
+        private TextView textView;
 
         public PustakawanViewHolder(@NonNull View itemView) {
             super(itemView);
-            gambarPustakawan = itemView.findViewById(R.id.imageview);
-            namaPustakawan = itemView.findViewById(R.id.textview);
+            imageView = itemView.findViewById(R.id.imageview);
+            textView = itemView.findViewById(R.id.textview);
         }
     }
 }

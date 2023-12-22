@@ -57,11 +57,12 @@
             >
             <!--            MULAI KODE BUAT ISI DI TEMPAT KOSONG ANGGOTA-->
 
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/dashpustakawan"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/dialogbg"
@@ -90,7 +91,6 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginLeft="25dp"
                 >
-
             </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>

@@ -1,28 +1,27 @@
 package com.example.perpustakaan.model;
 
 public class PustakawanModel {
-    private String nama;
-    private String gambarURL;
-
-    public PustakawanModel(String nama, String gambarURL) {
-        this.nama = nama;
-        this.gambarURL = gambarURL;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getNama() {
-        return nama;
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    private String name;
+    private int imageResource;
+
+    public PustakawanModel(String name, int imageResource) {
+        this.name = name;
+        this.imageResource = imageResource;
     }
 
-    public String getGambarURL() {
-        return gambarURL;
+    public String getName() {
+        return name;
     }
 
-    public void setGambarURL(String gambarURL) {
-        this.gambarURL = gambarURL;
+    public int getImageResource() {
+        return imageResource;
     }
 }
-
