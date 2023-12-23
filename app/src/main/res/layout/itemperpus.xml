@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/pilihperpus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/baseline_villa_24" />
+
+            <TextView
+                android:id="@+id/namaperpus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="75dp"
+                android:text="Nama Perpustakaan"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lokasiperpus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Kota"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_gravity="left"
+                android:layout_below="@id/namaperpus"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="75dp"/>
+
+
+            <TextView
+                android:id="@+id/jambuka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09.00 - 17.00"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_gravity="left"
+                android:layout_below="@id/lokasiperpus"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="75dp"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

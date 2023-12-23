@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -45,82 +46,26 @@
             </LinearLayout>
 
         </LinearLayout>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/pilihperpus"
+        <LinearLayout
+            android:id="@+id/dashanggota"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:visibility="visible"
+            android:background="@drawable/dialogbg"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            >
+            <!--            MULAI KODE BUAT ISI DI TEMPAT KOSONG ANGGOTA-->
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="left"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/baseline_villa_24" />
-
-                <TextView
-                    android:id="@+id/namaperpus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="75dp"
-                    android:text="Nama Perpustakaan"
-                    android:textColor="#000"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/lokasiperpus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nama Kota"
-                    android:textSize="16sp"
-                    android:textColor="#000"
-                    android:layout_gravity="left"
-                    android:layout_below="@id/namaperpus"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginLeft="75dp"/>
-
-                <TextView
-                    android:id="@+id/jambuka"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="09.00 - 17.00"
-                    android:textSize="16sp"
-                    android:textColor="#000"
-                    android:layout_gravity="left"
-                    android:layout_below="@id/lokasiperpus"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginLeft="75dp"/>
-
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/dashanggota"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="bottom"-->
-<!--            android:visibility="visible"-->
-<!--            android:background="@drawable/dialogbg"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:orientation="vertical"-->
-<!--            >-->
-<!--            &lt;!&ndash;            MULAI KODE BUAT ISI DI TEMPAT KOSONG ANGGOTA&ndash;&gt;-->
-
-
-<!--        </LinearLayout>-->
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
 
 <!--        <LinearLayout-->
 <!--            android:id="@+id/dashpustakawan"-->
