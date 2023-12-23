@@ -38,7 +38,7 @@
         android:layout_marginEnd="75dp"
         android:layout_marginBottom="75dp"
         android:gravity="center"
-        android:text="Anda sudah sampai di lokasi?"
+        android:text="Anda sudah sampai di lokasi??"
         android:textColor="#000"
         android:textSize="20sp"
         android:textStyle="bold" />
