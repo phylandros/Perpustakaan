@@ -5,7 +5,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0766AD"
+        android:orientation="vertical"
+        android:id="@+id/coordinator_layout"
+        >
+    <LinearLayout
+        android:id="@+id/toolbarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/profile"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/namauser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:text="Nama Pengguna"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textColor="#FFF"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:visibility="visible"
+        android:background="@drawable/dialogbg"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
     <!-- MapView untuk menampilkan peta -->
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -25,7 +72,6 @@
         map:uiZoomControls="true"
         map:uiZoomGestures="true"
         tools:ignore="MissingClass" />
-
     <TextView
         android:id="@+id/namaperpus"
         android:layout_width="wrap_content"
@@ -38,7 +84,7 @@
         android:layout_marginEnd="75dp"
         android:layout_marginBottom="75dp"
         android:gravity="center"
-        android:text="Anda sudah sampai di lokasi??"
+        android:text="Anda sudah sampai di lokasi?"
         android:textColor="#000"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -58,6 +104,8 @@
             android:textStyle="bold"
             android:textSize="16dp"
             />
+    </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
