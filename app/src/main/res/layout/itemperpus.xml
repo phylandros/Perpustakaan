@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pilihperpus"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardUseCompatPadding="true"
     android:layout_margin="16dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
@@ -14,20 +19,28 @@
         android:background="@drawable/shape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
         <ImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="left"
             android:layout_marginTop="5dp"
             android:src="@drawable/baseline_villa_24" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
         <TextView
             android:id="@+id/namaperpus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_gravity="left"
-            android:layout_marginLeft="75dp"
             android:text="Nama Perpustakaan"
             android:textColor="#000"
             android:textSize="20sp"
@@ -37,25 +50,25 @@
             android:id="@+id/lokasiperpus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="Nama Kota"
             android:textSize="16sp"
             android:textColor="#000"
             android:layout_gravity="left"
-            android:layout_below="@id/namaperpus"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="75dp"/>
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/jambuka"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="09.00 - 17.00"
             android:textSize="16sp"
             android:textColor="#000"
             android:layout_gravity="left"
             android:layout_below="@id/lokasiperpus"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="75dp"/>
-
+            android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
