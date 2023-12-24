@@ -69,7 +69,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="5dp"
-                android:src="@drawable/baseline_check_24"
+                android:src="@drawable/baseline_clear_24"
                 />
         </LinearLayout>
 
