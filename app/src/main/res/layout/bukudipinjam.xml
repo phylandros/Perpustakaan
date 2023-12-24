@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0766AD"
+        android:orientation="vertical"
+        android:id="@+id/coordinator_layout">
+
+        <!-- Toolbar -->
+        <LinearLayout
+            android:id="@+id/toolbarContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/profile"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"/>
+
+                <TextView
+                    android:id="@+id/namauser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:text="Nama Pengguna"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="#FFF"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Daftar Buku Dipilih -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:background="@drawable/dialogbg"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Berikut daftar buku yang Anda pilih :"
+                android:layout_margin="25dp"
+                android:textStyle="bold"
+                android:textColor="#0766AD"
+                android:textSize="18dp"/>
+
+            <!-- RecyclerView untuk menampilkan daftar buku yang dipilih -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSelectedBooks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"/>
+
+            <!-- Tombol Refresh dan Home -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Menunggu konfirmasi pustakawan  |"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textSize="16dp"/>
+                <!-- Tombol Refresh -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_refresh"
+                    android:contentDescription="Refresh"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onRefreshButtonClick"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <Button
+                    android:id="@+id/btnlogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/shapemasuk"
+                    android:textColor="#FFF"
+                    android:text="KEMBALI KE HOME"
+                    android:textStyle="bold"
+                    android:clickable="false"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
