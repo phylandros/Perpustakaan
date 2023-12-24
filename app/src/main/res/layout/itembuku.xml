@@ -45,7 +45,7 @@
             android:textStyle="bold"
             android:textSize="16dp"
             android:background="@drawable/shapemasuk"
-            android:text="Pinjam" />
+            android:text="Pilih" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
