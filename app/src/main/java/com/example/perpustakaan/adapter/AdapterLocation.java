@@ -48,7 +48,7 @@ public class AdapterLocation extends RecyclerView.Adapter<AdapterLocation.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location_perpus, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemperpus, parent, false);
         return new ViewHolder(view);
     }
 

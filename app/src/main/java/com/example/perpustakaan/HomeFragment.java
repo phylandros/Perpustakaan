@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -16,9 +17,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.perpustakaan.adapter.AdapterLocation;
 import com.example.perpustakaan.adapter.PustakawanAdapter;
+import com.example.perpustakaan.model.LocationDataModel;
 import com.example.perpustakaan.model.PustakawanModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,10 +91,10 @@ public class HomeFragment extends Fragment {
             userid = bundle.getString("userid", "");
             new FetchUserDataTask().execute(api+"/users/" + userid);
             new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
-
+            new FetchData().execute(api+"/perpus");
         }
 
-        LinearLayout toolbar = view.findViewById(R.id.toolbarContainer);
+        LinearLayout toolbar = view.findViewById(R.id.toolbar);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +227,87 @@ public class HomeFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class FetchData extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            StringBuilder result = new StringBuilder();
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(urls[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            processJSONData(s);
+        }
+    }
+    private void processJSONData(String jsonData) {
+        try {
+            JSONArray jsonArray = new JSONArray(jsonData);
+
+            List<LocationDataModel> dataList = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Integer perpusid = jsonObject.getInt("perpus_id");
+                String name = jsonObject.getString("nama");
+                String address = jsonObject.getString("alamat");
+                String operatingHours = jsonObject.getString("jam_operasional");
+                Integer image = R.drawable.image;
+                dataList.add(new LocationDataModel(image,perpusid,name, address, operatingHours));
+            }
+
+            getActivity().runOnUiThread(() -> {
+                RecyclerView recyclerView = view.findViewById(R.id.perpustakaan);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                AdapterLocation adapter = new AdapterLocation(dataList);
+                recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new AdapterLocation.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        LocationDataModel clickedItem = dataList.get(position);
+                        int perpusId = clickedItem.getPerpusid();
+
+                        // Pindah ke MapFragment dan kirim perpusId sebagai argumen
+                        FragmentManager fragmentManager = getParentFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                        MapFragment mapFragment = new MapFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("perpusId", perpusId);
+                        mapFragment.setArguments(bundle);
+
+                        fragmentTransaction.replace(R.id.frame_home, mapFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
