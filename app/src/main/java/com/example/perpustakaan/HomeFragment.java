@@ -290,7 +290,7 @@ public class HomeFragment extends Fragment {
                     public void onItemClick(int position) {
                         LocationDataModel clickedItem = dataList.get(position);
                         int perpusId = clickedItem.getPerpusid();
-
+                        String perpusnama = clickedItem.getTitle();
                         // Pindah ke MapFragment dan kirim perpusId sebagai argumen
                         FragmentManager fragmentManager = getParentFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -298,6 +298,7 @@ public class HomeFragment extends Fragment {
                         MapFragment mapFragment = new MapFragment();
                         Bundle bundle = new Bundle();
                         bundle.putInt("perpusId", perpusId);
+                        bundle.putString("nama",perpusnama);
                         mapFragment.setArguments(bundle);
 
                         fragmentTransaction.replace(R.id.frame_home, mapFragment);

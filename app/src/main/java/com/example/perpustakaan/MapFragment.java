@@ -3,10 +3,13 @@ package com.example.perpustakaan;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +26,8 @@ public class MapFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private int perpusId;
+    private String namaPerpus;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -50,8 +54,8 @@ public class MapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            perpusId = getArguments().getInt("perpusId", 0);
+            namaPerpus = getArguments().getString("nama", "");
         }
     }
 
@@ -59,6 +63,27 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+
+        Button btnLanjut = view.findViewById(R.id.btnlnjt);
+        btnLanjut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Di sini Anda membuat instance dari ListBukuFragment dan menavigasi ke sana
+                ListBukuFragment listBukuFragment = new ListBukuFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("perpusId", perpusId); // Menambahkan perpusId ke Bundle
+                bundle.putString("nama", namaPerpus); // Menambahkan namaPerpus ke Bundle
+                listBukuFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_home, listBukuFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        return view;
     }
 }

@@ -45,6 +45,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-maps:17.0.1")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("com.makeramen:roundedimageview:2.3.0")
 
     val camerax_version = "1.2.0-beta02"
     implementation ("androidx.camera:camera-core:${camerax_version}")
