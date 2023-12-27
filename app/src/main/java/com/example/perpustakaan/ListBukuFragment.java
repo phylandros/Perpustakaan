@@ -9,9 +9,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,9 +56,13 @@ public class ListBukuFragment extends Fragment {
     private String api = BuildConfig.API;
     private RecyclerView recyclerView;
 
+    private List<BukuModel> dataList = new ArrayList<>();
+    private BukuAdapter adapter;
+    private Bundle bundle;
     public ListBukuFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -91,17 +98,54 @@ public class ListBukuFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_list_buku, container, false);
         // Inflate the layout for this fragment
 
-        Bundle bundle = getArguments();
+        Button btnPinjam = view.findViewById(R.id.btnpinjambukuuser);
+
+
+        bundle = getArguments();
         if (bundle != null){
             perpusId = bundle.getInt("perpusId",0);
             new FetchListBukuTask().execute(api+"/perpus/"+ perpusId);
 
         }
 
+        btnPinjam.setOnClickListener(v -> {
+            // Ambil buku yang dipilih dari adapter
+            Integer[] selectedBookIds = adapter.getSelectedBukuIds().toArray(new Integer[0]);
+
+            if (selectedBookIds.length == 0) {
+                Toast.makeText(requireContext(), "Tidak ada buku yang dipilih.", Toast.LENGTH_SHORT).show();
+            } else {
+                PeminjamanUserFragment peminjamanUserFragment = new PeminjamanUserFragment();
+
+                bundle = new Bundle();
+                bundle.putIntegerArrayList("selectedBookIds", new ArrayList<>(Arrays.asList(selectedBookIds)));
+                bundle.putInt("perpusId", perpusId); // Menambahkan perpusId ke bundle
+                peminjamanUserFragment.setArguments(bundle);
+
+                // Menggunakan FragmentManager untuk membuat transaksi fragment
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                // Ganti fragment saat transaksi
+                fragmentTransaction.replace(R.id.frame_listbukuuser, peminjamanUserFragment);
+                fragmentTransaction.addToBackStack(null); // Menambahkan transaksi ke back stack
+                fragmentTransaction.commit();
+            }
+        });
 
         return view;
 
     }
+
+    private BukuModel findBookById(int bookId) {
+        for (BukuModel book : dataList) {
+            if (book.getBukuid() == bookId) {
+                return book;
+            }
+        }
+        return null; // Mengembalikan null jika tidak ditemukan buku dengan ID yang cocok
+    }
+
 
     public class FetchListBukuTask extends AsyncTask<String, Void, String> {
 
@@ -140,8 +184,6 @@ public class ListBukuFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(jsonData);
             JSONArray bukusArray = jsonObject.getJSONArray("bukus");
 
-            List<BukuModel> dataList = new ArrayList<>();
-
             for (int i = 0; i < bukusArray.length(); i++) {
                 JSONObject bukuObject = bukusArray.getJSONObject(i);
                 int bukus = bukuObject.getInt("buku_id");
@@ -159,7 +201,7 @@ public class ListBukuFragment extends Fragment {
                 RecyclerView recyclerView = view.findViewById(R.id.listbuku);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-                BukuAdapter adapter = new BukuAdapter(requireContext(),dataList);
+                adapter = new BukuAdapter(requireContext(),dataList);
                 recyclerView.setAdapter(adapter);
                 adapter.setOnItemSelectedListener((selectedIds) -> {
                     String message;

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/frame_listbukuuser"
     tools:context=".ListBukuFragment">
 
     <LinearLayout
@@ -63,7 +64,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                >
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listbuku"
                     android:layout_width="match_parent"
@@ -71,6 +73,36 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/barbawah"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:id="@+id/buttonPanel"
+                    android:layout_below="@+id/layoutVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
+
+                    <Button
+                        android:id="@+id/btnpinjambukuuser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/shapemasuk"
+                        android:textColor="#FFF"
+                        android:text="Pinjam buku"
+                        android:textStyle="bold"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 

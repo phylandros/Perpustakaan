@@ -2,6 +2,7 @@ package com.example.perpustakaan.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +24,21 @@ public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.BukuViewHolder
 
     private List<BukuModel> dataList;
     private Context context;
-    private List<Integer> selectedPerpusIds = new ArrayList<>();
+    private List<Integer> selectedBukuIds = new ArrayList<>();
     private OnItemSelectedListener listener;
 
     public BukuAdapter(Context context, List<BukuModel> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
-    public List<Integer> getSelectedPerpusIds() {
-        return selectedPerpusIds;
+    public List<Integer> getSelectedBukuIds() {
+        List<Integer> selectedIds = new ArrayList<>();
+        for (BukuModel buku : dataList) {
+            if (buku.isSelected()) {
+                selectedIds.add(buku.getBukuid());
+            }
+        }
+        return selectedIds;
     }
 
     public interface OnItemSelectedListener {
@@ -41,6 +48,10 @@ public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.BukuViewHolder
     public void setOnItemSelectedListener(OnItemSelectedListener listener) {
         this.listener = listener;
     }
+
+
+
+
     @NonNull
     @Override
     public BukuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,13 +61,6 @@ public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.BukuViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BukuViewHolder holder, int position) {
-//        BukuModel buku = dataList.get(position);
-//
-//        holder.imageView.setImageResource(buku.getGambar());
-//        holder.nameTextView.setText(buku.getJudul());
-//        holder.deskripsiTextView.setText(buku.getDeskripsi());
-//        holder.itemView.setSelected(buku.isSelected());
-
         BukuModel buku = dataList.get(position);
         holder.bind(buku);
     }

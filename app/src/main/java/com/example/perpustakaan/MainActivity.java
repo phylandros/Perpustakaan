@@ -38,14 +38,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnWelkom;
-    BottomSheetDialog dialog;
-    String api = BuildConfig.API;
+    private Button btnWelkom;
+    private BottomSheetDialog dialog;
+    private String api = BuildConfig.API;
 
     private EditText inpEmail, inpPassword;
     private Button btnMasuk;
-    String userId, accessToken;
-    EditText namaReg, emailReg, passReg, conpassReg, noktpReg, alamatReg, notelReg;
+    private String userId, accessToken;
+    private EditText namaReg, emailReg, passReg, conpassReg, noktpReg, alamatReg, notelReg;
 
 
     @Override
