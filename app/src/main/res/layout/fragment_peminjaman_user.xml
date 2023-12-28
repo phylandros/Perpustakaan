@@ -62,7 +62,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buku yang ingin di pinjam"
+                        android:text="Buku yang anda ingin di pinjam"
                         android:layout_margin="25dp"
                         android:textStyle="bold"
                         android:textColor="#0766AD"
@@ -73,6 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvbukudipinjam"
                         android:layout_width="match_parent"
@@ -80,13 +81,52 @@
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"
                         />
+
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tanggal Pengembalian"
+                        android:textColor="#000"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/robotobold"
+                        />
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukan Tanggal (YYYY-MM-DD)"
+                        android:textSize="15dp"
+                        android:textColor="#000"
+                        android:fontFamily="@font/robotoreg"
+                        android:inputType="date"
+                        />
+                    <Button
+                        android:layout_width="130dp"
+                        android:layout_height="35dp"
+                        android:text="pinjam buku"
+                        android:textColor="#FFF"
+                        android:fontFamily="@font/robotobold"
+                        android:background="@drawable/buttonbulet"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginRight="25dp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     >
 
                     <TextView

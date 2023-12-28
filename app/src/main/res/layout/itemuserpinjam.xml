@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:background="@drawable/kotakcardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        >
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center"
+            android:src="@drawable/baseline_brightness_1_24"
+            />
+
+        <TextView
+            android:id="@+id/text_view_judul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_marginLeft="6dp"
+            android:textSize="16dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoreg"
+            android:text="@string/app_name"/>
+
+    </LinearLayout>
+</LinearLayout>
