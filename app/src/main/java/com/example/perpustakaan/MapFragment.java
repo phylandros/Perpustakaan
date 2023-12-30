@@ -27,7 +27,7 @@ public class MapFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private int perpusId;
-    private String namaPerpus;
+    private String namaPerpus, userid;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -56,6 +56,7 @@ public class MapFragment extends Fragment {
         if (getArguments() != null) {
             perpusId = getArguments().getInt("perpusId", 0);
             namaPerpus = getArguments().getString("nama", "");
+            userid = getArguments().getString("userid","");
         }
     }
 
@@ -74,6 +75,7 @@ public class MapFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("perpusId", perpusId); // Menambahkan perpusId ke Bundle
                 bundle.putString("nama", namaPerpus); // Menambahkan namaPerpus ke Bundle
+                bundle.putString("userid", userid);
                 listBukuFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = getParentFragmentManager();

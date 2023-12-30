@@ -53,6 +53,7 @@ public class ListBukuFragment extends Fragment {
     private String mParam2;
     private View view;
     private Integer perpusId;
+    private String userid;
     private String api = BuildConfig.API;
     private RecyclerView recyclerView;
 
@@ -104,12 +105,13 @@ public class ListBukuFragment extends Fragment {
         bundle = getArguments();
         if (bundle != null){
             perpusId = bundle.getInt("perpusId",0);
+            userid = bundle.getString("userid","");
             new FetchListBukuTask().execute(api+"/perpus/"+ perpusId);
 
         }
 
         btnPinjam.setOnClickListener(v -> {
-            // Ambil buku yang dipilih dari adapter
+            // Ambil buku id yang dipilih dari adapter
             Integer[] selectedBookIds = adapter.getSelectedBukuIds().toArray(new Integer[0]);
 
             if (selectedBookIds.length == 0) {
@@ -119,7 +121,8 @@ public class ListBukuFragment extends Fragment {
 
                 bundle = new Bundle();
                 bundle.putIntegerArrayList("selectedBookIds", new ArrayList<>(Arrays.asList(selectedBookIds)));
-                bundle.putInt("perpusId", perpusId); // Menambahkan perpusId ke bundle
+                bundle.putInt("perpusId", perpusId);
+                bundle.putString("userid",userid);
                 peminjamanUserFragment.setArguments(bundle);
 
                 // Menggunakan FragmentManager untuk membuat transaksi fragment
@@ -128,7 +131,7 @@ public class ListBukuFragment extends Fragment {
 
                 // Ganti fragment saat transaksi
                 fragmentTransaction.replace(R.id.frame_listbukuuser, peminjamanUserFragment);
-                fragmentTransaction.addToBackStack(null); // Menambahkan transaksi ke back stack
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -143,7 +146,7 @@ public class ListBukuFragment extends Fragment {
                 return book;
             }
         }
-        return null; // Mengembalikan null jika tidak ditemukan buku dengan ID yang cocok
+        return null;
     }
 
 
@@ -214,7 +217,7 @@ public class ListBukuFragment extends Fragment {
                         }
                         message = selectedPerpusMessage.toString().trim();
                     }
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 });
             });
         } catch (JSONException e) {

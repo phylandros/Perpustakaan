@@ -299,6 +299,7 @@ public class HomeFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putInt("perpusId", perpusId);
                         bundle.putString("nama",perpusnama);
+                        bundle.putString("userid",userid);
                         mapFragment.setArguments(bundle);
 
                         fragmentTransaction.replace(R.id.frame_home, mapFragment);

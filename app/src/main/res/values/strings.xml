@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">BEBE</string>
+    <string name="app_name">E-Perpus</string>
 
-    <string name="title">Borwan Borjoy Paling Mudah Pinjam Buku</string>
+    <string name="title">E-Perpus Paling Mudah Pinjam Buku</string>
     <string name="sub_title">Semakin mudah mencari perpustakaan dan meminjam buku dengan Smartphone</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

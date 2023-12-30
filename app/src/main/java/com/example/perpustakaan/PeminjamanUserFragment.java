@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,11 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.perpustakaan.adapter.BukuAdapter;
 import com.example.perpustakaan.adapter.BukuDipinjamAdapter;
-import com.example.perpustakaan.model.BukuModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +29,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +50,7 @@ public class PeminjamanUserFragment extends Fragment {
     private int perpusId;
     private ArrayList<Integer> selectedBookIds;
     private String api = BuildConfig.API;
+    private String userid;
     private View view;
 
     public PeminjamanUserFragment() {
@@ -79,6 +81,7 @@ public class PeminjamanUserFragment extends Fragment {
         if (getArguments() != null) {
             selectedBookIds = getArguments().getIntegerArrayList("selectedBookIds");
             perpusId = getArguments().getInt("perpusId");
+            userid = getArguments().getString("userid");
         }
     }
 
@@ -87,11 +90,19 @@ public class PeminjamanUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_peminjaman_user, container, false);
-
-        Log.d("PeminjamanUserFragment", "Selected Book IDs: " + selectedBookIds);
-        Log.d("PeminjamanUserFragment", "Perpus ID: " + perpusId);
-
         new FetchBookData().execute(api + "/perpus/" + perpusId);
+
+        Button tambahPinjamButton = view.findViewById(R.id.tambahpinjam);
+        tambahPinjamButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ambil daftar buku_id dari adapter RecyclerView atau dari sumber lain
+                postDataToAPI(selectedBookIds, userid, perpusId);
+                Toast.makeText(requireContext(), "Berhasil di tambahkan ke list peminjaman", Toast.LENGTH_SHORT).show();
+                tambahPinjamButton.setEnabled(false);
+                tambahPinjamButton.setBackgroundResource(R.drawable.shapedisable);
+            }
+        });
 
         return view;
     }
@@ -154,18 +165,14 @@ public class PeminjamanUserFragment extends Fragment {
                         }
                     }
 
-// Inisialisasi RecyclerView
                     RecyclerView recyclerView = view.findViewById(R.id.rvbukudipinjam);
 
-// Atur GridLayoutManager dengan 2 kolom
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                     recyclerView.setLayoutManager(linearLayoutManager);
 
-// Buat adapter dan atur ke RecyclerView
                     BukuDipinjamAdapter bukuAdapter = new BukuDipinjamAdapter(selectedBooks);
                     recyclerView.setAdapter(bukuAdapter);
 
-// Notify adapter about data changes
                     bukuAdapter.notifyDataSetChanged();
 
 
@@ -177,6 +184,61 @@ public class PeminjamanUserFragment extends Fragment {
             }
         }
 
+    }
+
+    private void postDataToAPI(ArrayList<Integer> selectedBookIds, String user, int perpus) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = dateFormat.format(new Date());
+        EditText editTextTanggalKembali = view.findViewById(R.id.tglkembalipinjam);
+        String tanggalKembali = editTextTanggalKembali.getText().toString();
+
+        for (Integer bukuId : selectedBookIds) {
+            JSONObject postData = new JSONObject();
+            try {
+                postData.put("tanggal_pinjam", currentDate);
+                postData.put("tanggal_kembali", tanggalKembali);
+                postData.put("keterangan", "Belum di verifikasi");
+                postData.put("user_id", user);
+                postData.put("perpus_id", perpus);
+                postData.put("buku_id", bukuId.toString()); // Ubah bukuId ke string
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            new PostDataToAPI().execute(api + "/pinjam", postData.toString());
+        }
+    }
+
+
+    private class PostDataToAPI extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            if (params.length < 2) return null;
+
+            String apiUrl = params[0];
+            String postData = params[1];
+
+            try {
+                URL url = new URL(apiUrl);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setDoOutput(true);
+
+                // Kirim data JSON
+                urlConnection.getOutputStream().write(postData.getBytes());
+
+                // Mendapatkan respons dari server (jika diperlukan)
+                int responseCode = urlConnection.getResponseCode();
+
+                // Tambahkan log atau respons handling di sini jika diperlukan
+
+                urlConnection.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
 }

@@ -101,6 +101,7 @@
                         android:fontFamily="@font/robotobold"
                         />
                     <EditText
+                        android:id="@+id/tglkembalipinjam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Masukan Tanggal (YYYY-MM-DD)"
@@ -110,6 +111,7 @@
                         android:inputType="date"
                         />
                     <Button
+                        android:id="@+id/tambahpinjam"
                         android:layout_width="130dp"
                         android:layout_height="35dp"
                         android:text="pinjam buku"
@@ -119,7 +121,7 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
-                        android:layout_marginRight="25dp"/>
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -141,7 +143,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Belum diterima"
+                        android:text="Belum di verifikasi"
                         android:fontFamily="@font/robotoreg"
                         android:textSize="16dp"
                         />
