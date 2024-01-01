@@ -1,5 +1,6 @@
 package com.example.perpustakaan;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -111,30 +112,19 @@ public class ListBukuFragment extends Fragment {
         }
 
         btnPinjam.setOnClickListener(v -> {
-            // Ambil buku id yang dipilih dari adapter
             Integer[] selectedBookIds = adapter.getSelectedBukuIds().toArray(new Integer[0]);
 
             if (selectedBookIds.length == 0) {
                 Toast.makeText(requireContext(), "Tidak ada buku yang dipilih.", Toast.LENGTH_SHORT).show();
             } else {
-                PeminjamanUserFragment peminjamanUserFragment = new PeminjamanUserFragment();
-
-                bundle = new Bundle();
-                bundle.putIntegerArrayList("selectedBookIds", new ArrayList<>(Arrays.asList(selectedBookIds)));
-                bundle.putInt("perpusId", perpusId);
-                bundle.putString("userid",userid);
-                peminjamanUserFragment.setArguments(bundle);
-
-                // Menggunakan FragmentManager untuk membuat transaksi fragment
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                // Ganti fragment saat transaksi
-                fragmentTransaction.replace(R.id.frame_listbukuuser, peminjamanUserFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(requireActivity(), PeminjamanUserActivity.class);
+                intent.putIntegerArrayListExtra("selectedBookIds", new ArrayList<>(Arrays.asList(selectedBookIds)));
+                intent.putExtra("perpusId", perpusId);
+                intent.putExtra("userid", userid);
+                startActivity(intent);
             }
         });
+
 
         return view;
 

@@ -193,9 +193,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
-        private class PostRegisterAsyncTask extends AsyncTask<String, Void, String> {
+    private class PostRegisterAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String response = "";
@@ -212,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 postData.put("email", params[1]);
                 postData.put("password", params[2]);
                 postData.put("confPassword", params[3]);
-                postData.put("gambar", "gambar"); // Menggunakan placeholder "gambar"
+                postData.put("gambar", "");
                 postData.put("nip_perpus", String.valueOf(System.currentTimeMillis()));
                 postData.put("ktp", params[4]);
                 postData.put("alamat", params[5]);

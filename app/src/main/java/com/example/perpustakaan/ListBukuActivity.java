@@ -1,5 +1,6 @@
 package com.example.perpustakaan;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
@@ -41,7 +42,6 @@ public class ListBukuActivity extends AppCompatActivity {
 
         Button btnPinjam = findViewById(R.id.btnpinjambukuuser);
         bundle = getIntent().getExtras();
-
         if (bundle != null){
             perpusId = bundle.getInt("perpusId",0);
             userid = bundle.getString("userid","");
@@ -49,26 +49,16 @@ public class ListBukuActivity extends AppCompatActivity {
         }
 
         btnPinjam.setOnClickListener(v -> {
-            // Ambil buku id yang dipilih dari adapter
             Integer[] selectedBookIds = adapter.getSelectedBukuIds().toArray(new Integer[0]);
 
             if (selectedBookIds.length == 0) {
-                Toast.makeText(getApplicationContext(), "Tidak ada buku yang dipilih.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListBukuActivity.this, "Tidak ada buku yang dipilih.", Toast.LENGTH_SHORT).show();
             } else {
-                PeminjamanUserFragment peminjamanUserFragment = new PeminjamanUserFragment();
-
-                bundle = new Bundle();
-                bundle.putIntegerArrayList("selectedBookIds", new ArrayList<>(Arrays.asList(selectedBookIds)));
-                bundle.putInt("perpusId", perpusId);
-                bundle.putString("userid",userid);
-                peminjamanUserFragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                fragmentTransaction.replace(R.id.frame_listbukuuser, peminjamanUserFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(ListBukuActivity.this, PeminjamanUserActivity.class);
+                intent.putIntegerArrayListExtra("selectedBookIds", new ArrayList<>(Arrays.asList(selectedBookIds)));
+                intent.putExtra("perpusId", perpusId);
+                intent.putExtra("userid", userid);
+                startActivity(intent);
             }
         });
 

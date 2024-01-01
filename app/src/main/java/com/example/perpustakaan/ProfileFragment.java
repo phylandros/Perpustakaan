@@ -93,18 +93,13 @@ public class ProfileFragment extends Fragment {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeFragment homeFragment = new HomeFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", userId);
-                homeFragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_profile, homeFragment); // Menggunakan profileFragment yang sudah di-set dengan bundle
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("userid", userId);
+                startActivity(intent);
+                requireActivity().finish(); // Menutup Activity saat ini jika diinginkan
             }
         });
+
 
         Button btnLogout = view.findViewById(R.id.btnlogout);
 
