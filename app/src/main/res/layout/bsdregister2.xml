@@ -47,6 +47,7 @@
                     >
 
                     <ImageView
+                        android:id="@+id/imageuser"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
@@ -55,11 +56,13 @@
                         />
 
                     <ImageView
+                        android:id="@+id/uploadimage"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/camera"
                         android:background="@drawable/avatarcircle"
                         android:translationX="108dp"
+                        android:clickable="true"
                         android:translationY="100dp"/>
                 </RelativeLayout>
 

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapFragment"
-    android:background="#0766AD"
-    >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    tools:context=".ListBukuActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,71 +39,74 @@
                         android:layout_height="27dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
-                        android:text="Lokasi Perpustakaan"
+                        android:text="Pemilihan buku"
                         android:textStyle="bold"
                         android:textSize="16dp"
                         android:textColor="#FFF"/>
+                </LinearLayout>
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:background="@drawable/dialogbg"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih buku yang ingin Anda pinjam"
+                    android:layout_margin="25dp"
+                    android:textStyle="bold"
+                    android:textColor="#0766AD"
+                    android:textSize="18dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listbuku"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/barbawah"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/buttonPanel"
+                        android:layout_below="@+id/layoutVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true">
+
+                        <Button
+                            android:id="@+id/btnpinjambukuuser"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/shapemasuk"
+                            android:textColor="#FFF"
+                            android:text="Pinjam buku"
+                            android:textStyle="bold"
+                            android:textSize="16dp" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/dashanggota"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/dialogbg"
-                android:orientation="vertical"
-                >
-                <!--            MULAI KODE BUAT ISI DI TEMPAT KOSONG ANGGOTA-->
-                <TextView
-                    android:id="@+id/texttest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Apakah kamu sudah di perpus ?"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textColor="#0766AD"
-                    android:textSize="18dp"/>
-                <WebView
-                    android:id="@+id/webView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/barbawah"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
-                android:id="@+id/buttonPanel"
-                android:layout_below="@+id/layoutVideo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-                <Button
-                    android:id="@+id/btnlnjt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/shapemasuk"
-                    android:textColor="#FFF"
-                    android:text="Lanjutkan Cari Buku"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
-            </LinearLayout>
-
         </LinearLayout>
 
-    </RelativeLayout>
-</FrameLayout>
+</LinearLayout>

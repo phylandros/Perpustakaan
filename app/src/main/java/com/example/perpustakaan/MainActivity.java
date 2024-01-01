@@ -1,5 +1,6 @@
 package com.example.perpustakaan;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -7,23 +8,21 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private Button btnWelkom;
     private BottomSheetDialog dialog;
     private String api = BuildConfig.API;
-
     private EditText inpEmail, inpPassword;
     private Button btnMasuk;
     private String userId, accessToken;
     private EditText namaReg, emailReg, passReg, conpassReg, noktpReg, alamatReg, notelReg;
-
+    private ImageView imageUser;
+    private static final int PICK_IMAGE = 1;
+    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         btnWelkom = findViewById(R.id.btnWelkom);
         dialog = new BottomSheetDialog(this);
 
+        test = findViewById(R.id.textTengah);
         btnWelkom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             String jsonData = "";
 
             try {
-                URL url = new URL(api+"/login");
+                URL url = new URL(api + "/login");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json");
@@ -160,28 +161,26 @@ public class MainActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("accessToken", accessToken);
                             editor.apply();
+
                             JSONObject data = jsonResponse.getJSONObject("data");
                             if (data.has("userId") && data.has("name") && data.has("email")) {
                                 userId = data.getString("userId");
-
                                 String name = data.getString("name");
                                 String email = data.getString("email");
                                 editor.putString("name", name);
                                 editor.putString("email", email);
                                 editor.putString("userid", userId);
                                 editor.apply();
-                            }
-                            HomeFragment homeFragment = HomeFragment.newInstance(userId,accessToken);
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.container_home, homeFragment);
-                            fragmentTransaction.commit();
-                            dialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Login Berhasil", Toast.LENGTH_SHORT).show();
-                        }
 
-                    }
-                    else {
+                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                intent.putExtra("userid", userId);
+                                intent.putExtra("accessToken", accessToken);
+                                startActivity(intent);
+                                dialog.dismiss();
+                                Toast.makeText(MainActivity.this, "Login Berhasil", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
                         Toast.makeText(MainActivity.this, "Gagal mendapatkan accessToken", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -189,13 +188,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("JSON Parse Error", "Error parsing JSON response");
                 }
             } else {
-                Toast.makeText(MainActivity.this,"Username dan password salah",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Username dan password salah", Toast.LENGTH_SHORT).show();
                 Log.e("Connection Error", "No data received from server");
             }
         }
     }
 
-    private class PostRegisterAsyncTask extends AsyncTask<String, Void, String> {
+
+        private class PostRegisterAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             String response = "";
@@ -292,10 +292,22 @@ public class MainActivity extends AppCompatActivity {
     public void showRegister2Dialog(String nama, String email, String password, String conpassword) {
         dialog.setContentView(R.layout.bsdregister2);
         Button btnLanjut2 = dialog.findViewById(R.id.btnlanjut2);
+        ImageView btnUpload = dialog.findViewById(R.id.uploadimage);
+        imageUser = dialog.findViewById(R.id.imageuser);
 
         noktpReg = dialog.findViewById(R.id.etNoKtp);
         alamatReg = dialog.findViewById(R.id.etAlamat);
         notelReg = dialog.findViewById(R.id.etNotel);
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, PICK_IMAGE);
+            }
+        });
+
+
         btnLanjut2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -314,6 +326,19 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+            // Ambil URI gambar yang dipilih
+            Uri selectedImageUri = data.getData();
+
+            // Tampilkan gambar yang dipilih ke ImageView
+            imageUser.setImageURI(selectedImageUri);
+        }
+    }
+
     public void showRegisterDoneDialog() {
         // Tampilkan dialog register done (bsdregisdone)
         dialog.setContentView(R.layout.bsdregisdone);
@@ -328,13 +353,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
     }
 }
