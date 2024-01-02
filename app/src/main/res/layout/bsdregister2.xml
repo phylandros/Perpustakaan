@@ -46,14 +46,26 @@
                     android:gravity="center"
                     >
 
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/imageuser"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/profile"
-                        android:layout_marginBottom="25dp"
-                        />
+                        android:background="@color/black"
+                        app:shapeAppearance="@style/circular"
+                        app:strokeColor="#1111EEEE"
+                        app:strokeWidth="8dp"
+                        android:padding="15dp"/>
+
+
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imageuser"-->
+<!--                        android:layout_width="150dp"-->
+<!--                        android:layout_height="150dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:src="@drawable/profile"-->
+<!--                        android:layout_marginBottom="25dp"-->
+<!--                        />-->
 
                     <ImageView
                         android:id="@+id/uploadimage"
@@ -72,6 +84,7 @@
                     android:text="No. Kartu Tanda Penduduk"
                     android:textStyle="bold"
                     android:textColor="#000"
+                    android:layout_marginTop="15dp"
                     android:textSize="16dp"/>
 
 

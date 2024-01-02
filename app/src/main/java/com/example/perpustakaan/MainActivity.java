@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,10 +22,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.media.MediaScannerConnection;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -212,9 +225,9 @@ public class MainActivity extends AppCompatActivity {
                 postData.put("confPassword", params[3]);
                 postData.put("gambar", "");
                 postData.put("nip_perpus", String.valueOf(System.currentTimeMillis()));
-                postData.put("ktp", params[4]);
-                postData.put("alamat", params[5]);
-                postData.put("phone", params[6]);
+                postData.put("ktp", params[5]);
+                postData.put("alamat", params[6]);
+                postData.put("phone", params[7]);
 
                 OutputStream outputStream = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
@@ -300,8 +313,12 @@ public class MainActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent, PICK_IMAGE);
+                ImagePicker.with(MainActivity.this)
+                        .crop()
+                        .compress(1024)
+                        .maxResultSize(1080, 1080)
+                        .start();
+
             }
         });
 
@@ -312,9 +329,12 @@ public class MainActivity extends AppCompatActivity {
                 String ktp = noktpReg.getText().toString().trim();
                 String alamat = alamatReg.getText().toString().trim();
                 String notel = notelReg.getText().toString().trim();
-
                 if (!ktp.isEmpty() && !alamat.isEmpty() && !notel.isEmpty()) {
-                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword, ktp, alamat, notel);
+                    imageUser.setDrawingCacheEnabled(true);
+                    Bitmap bitmap = imageUser.getDrawingCache();
+                    File tempFile = saveBitmapToFile(bitmap);
+
+                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword, tempFile.getPath(), ktp, alamat, notel);
                     showRegisterDoneDialog();
                 } else {
                     Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
@@ -324,18 +344,31 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private File saveBitmapToFile(Bitmap bitmap) {
+        // Simpan gambar sebagai file sementara
+        File tempFile = null;
+        try {
+            tempFile = File.createTempFile("tempImage", ".png", getCacheDir());
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tempFile;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
-            // Ambil URI gambar yang dipilih
-            Uri selectedImageUri = data.getData();
-
-            // Tampilkan gambar yang dipilih ke ImageView
-            imageUser.setImageURI(selectedImageUri);
+        if (data != null) {
+            Uri uri = data.getData();
+            imageUser.setImageURI(uri);
         }
     }
+
+
 
     public void showRegisterDoneDialog() {
         // Tampilkan dialog register done (bsdregisdone)

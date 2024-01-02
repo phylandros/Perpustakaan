@@ -212,14 +212,12 @@ public class ProfileFragment extends Fragment {
                 TextView txNoktp = view.findViewById(R.id.noktp);
                 TextView txAlamat = view.findViewById(R.id.alamat);
                 TextView txEmail = view.findViewById(R.id.email);
-                TextView txPassword = view.findViewById(R.id.password);
 
                 txNamapengguna.setText(name);
                 txNoanggota.setText(nipPerpus);
                 txNoktp.setText(ktp);
                 txAlamat.setText(alamat);
                 txEmail.setText(email);
-                txPassword.setText("*******");
 
 
             } catch (JSONException e) {

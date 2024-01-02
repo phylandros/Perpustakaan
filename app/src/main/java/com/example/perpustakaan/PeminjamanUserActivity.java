@@ -268,8 +268,10 @@ public class PeminjamanUserActivity extends AppCompatActivity {
                     TextView textVerif = findViewById(R.id.textverif);
                     if (isVerif == 1) {
                         textVerif.setText("Berhasil di verifikasi");
+                        textVerif.setTextColor(Integer.parseInt("#65B741"));
                     } else {
                         textVerif.setText("Belum di verifikasi");
+                        textVerif.setTextColor(Integer.parseInt("#B80000"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

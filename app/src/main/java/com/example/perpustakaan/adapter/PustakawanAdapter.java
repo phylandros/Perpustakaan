@@ -1,6 +1,7 @@
 package com.example.perpustakaan.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.perpustakaan.BukuFragment;
-import com.example.perpustakaan.PeminjamanFragment;
-import com.example.perpustakaan.PengembalianFragment;
 import com.example.perpustakaan.R;
-import com.example.perpustakaan.VerifikasiFragment;
+import com.example.perpustakaan.admin.BukuActivity;
+import com.example.perpustakaan.admin.PeminjamanActivity;
+import com.example.perpustakaan.admin.PengembalianActivity;
+import com.example.perpustakaan.admin.VerifikasiActivity;
 import com.example.perpustakaan.model.PustakawanModel;
 
 import java.util.List;
@@ -78,33 +75,17 @@ public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.Pu
                     if (position != RecyclerView.NO_POSITION) {
                         PustakawanModel clickedItem = pustakawanList.get(position);
                         if (clickedItem.getName().equals("Buku")) {
-                            Fragment bukuFragment = new BukuFragment();
-                            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.frame_home, bukuFragment)
-                                    .addToBackStack(null)
-                                    .commit();
-                        } if (clickedItem.getName().equals("Verifikasi")) {
-                            Fragment verifikasiFragment = new VerifikasiFragment();
-                            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.frame_home, verifikasiFragment)
-                                    .addToBackStack(null)
-                                    .commit();
-                        } if (clickedItem.getName().equals("Peminjaman")) {
-                            Fragment peminjamanFragment = new PeminjamanFragment();
-                            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.frame_home, peminjamanFragment)
-                                    .addToBackStack(null)
-                                    .commit();
-                        } if (clickedItem.getName().equals("Pengembalian")) {
-                            Fragment pengembalianFragment = new PengembalianFragment();
-                            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.frame_home, pengembalianFragment)
-                                    .addToBackStack(null)
-                                    .commit();
+                            Intent bukuIntent = new Intent(context, BukuActivity.class);
+                            context.startActivity(bukuIntent);
+                        } else if (clickedItem.getName().equals("Verifikasi")) {
+                            Intent verifikasiIntent = new Intent(context, VerifikasiActivity.class);
+                            context.startActivity(verifikasiIntent);
+                        } else if (clickedItem.getName().equals("Peminjaman")) {
+                            Intent peminjamanIntent = new Intent(context, PeminjamanActivity.class);
+                            context.startActivity(peminjamanIntent);
+                        } else if (clickedItem.getName().equals("Pengembalian")) {
+                            Intent pengembalianIntent = new Intent(context, PengembalianActivity.class);
+                            context.startActivity(pengembalianIntent);
                         }
                     }
                 }
@@ -112,4 +93,3 @@ public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.Pu
         }
     }
 }
-

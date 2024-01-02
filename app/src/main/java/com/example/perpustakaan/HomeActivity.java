@@ -85,17 +85,16 @@ public class HomeActivity extends AppCompatActivity {
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         pustakawanAdapter = new PustakawanAdapter(this, pustakawanList);
-        recyclerView.setAdapter(pustakawanAdapter);
-        populatePustakawanList(); // Populasi data Pustakawan (sudah ada di dalam adapter)
-    }
-
-    private void populatePustakawanList() {
         pustakawanList.add(new PustakawanModel("Buku", R.drawable.image));
         pustakawanList.add(new PustakawanModel("Verifikasi", R.drawable.image));
         pustakawanList.add(new PustakawanModel("Peminjaman", R.drawable.image));
         pustakawanList.add(new PustakawanModel("Pengembalian", R.drawable.image));
-        pustakawanAdapter.notifyDataSetChanged();
+        pustakawanAdapter.notifyDataSetChanged(); // Populasi data Pustakawan (sudah ada di dalam adapter)
+        recyclerView.setAdapter(pustakawanAdapter);
+
+
     }
+
 
     private class FetchUserDataTask extends AsyncTask<String, Void, String> {
 
