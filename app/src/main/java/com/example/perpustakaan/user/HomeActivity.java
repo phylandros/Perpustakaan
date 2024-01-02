@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.adapter.AdapterLocation;
 import com.example.perpustakaan.adapter.PustakawanAdapter;
+import com.example.perpustakaan.admin.VerifikasiActivity;
 import com.example.perpustakaan.model.LocationDataModel;
 import com.example.perpustakaan.model.PustakawanModel;
 
@@ -49,6 +51,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        setContentView(R.layout.activity_verifikasi);
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
         Intent intent = getIntent();
         if (intent != null) {
             userid = intent.getStringExtra("userid");
@@ -57,6 +63,14 @@ public class HomeActivity extends AppCompatActivity {
             new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
             new FetchData().execute(api+"/perpus");
         }
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new FetchData().execute(api+"/perpus");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         // Toolbar
         LinearLayout toolbar = findViewById(R.id.toolbarhome);

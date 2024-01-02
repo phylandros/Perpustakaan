@@ -36,7 +36,6 @@
                             android:layout_marginLeft="15dp"/>
 
                         <TextView
-                            android:id="@+id/test"
                             android:layout_width="wrap_content"
                             android:layout_height="27dp"
                             android:layout_gravity="center_vertical"
@@ -129,12 +128,14 @@
                         android:orientation="horizontal"
                         android:gravity="center"
                         android:layout_marginTop="15dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
                         >
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pengesahan peminjaman : "
+                            android:text="Verifikasi Pustakawan : "
                             android:textStyle="bold"
                             android:textColor="#000"
                             android:fontFamily="@font/robotobold"
@@ -145,8 +146,9 @@
                             android:textColor="#000"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Belum di verifikasi"
-                            android:fontFamily="@font/robotoreg"
+                            android:text=""
+
+                            android:fontFamily="@font/robotobold"
                             android:textSize="16dp"
                             />
 

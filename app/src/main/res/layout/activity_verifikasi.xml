@@ -7,11 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".admin.VerifikasiActivity">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -20,11 +18,13 @@
                 android:orientation="vertical"
                 android:id="@+id/coordinator_layout"
                 >
+
                 <LinearLayout
                     android:id="@+id/toolbarContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:id="@+id/backinput"
                         android:layout_width="match_parent"
@@ -50,8 +50,8 @@
                             android:textSize="16dp"
                             android:textColor="#FFF"/>
 
-
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -81,13 +81,22 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvverifikasi"
+                        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                            android:id="@+id/swipeRefreshLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="25dp"
                             android:layout_marginRight="25dp"
-                            />
+                            >
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvverifikasi"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                />
+                        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>

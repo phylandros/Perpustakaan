@@ -6,7 +6,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.adapter.VerifikasiAdapter;
 import com.example.perpustakaan.model.Verifikasi;
@@ -29,17 +31,26 @@ public class VerifikasiActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private VerifikasiAdapter adapter;
+    private String api = BuildConfig.API;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verifikasi);
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         recyclerView = findViewById(R.id.rvverifikasi);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        new FetchDataTask().execute("http://8.219.70.58:5988/pinjam"); // Ganti dengan URL API Anda
+        new FetchDataTask().execute(api+"/pinjam"); // Ganti dengan URL API Anda
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new FetchDataTask().execute(api+"/pinjam");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private class FetchDataTask extends AsyncTask<String, Void, List<Verifikasi>> {
@@ -66,21 +77,24 @@ public class VerifikasiActivity extends AppCompatActivity {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    JSONObject userObject = jsonObject.getJSONObject("user");
-                    String namaUser = userObject.getString("name");
+                    int isVerif = jsonObject.getInt("isVerif");
+                    if (isVerif == 0) {
+                        JSONObject userObject = jsonObject.getJSONObject("user");
+                        String namaUser = userObject.getString("name");
 
-                    JSONObject bukuObject = jsonObject.getJSONObject("buku");
-                    String namaBuku = bukuObject.getString("judul");
+                        JSONObject bukuObject = jsonObject.getJSONObject("buku");
+                        String namaBuku = bukuObject.getString("judul");
 
-                    String tanggalKembali = jsonObject.getString("tanggal_kembali");
-                    String pinjamId = jsonObject.getString("pinjam_id");
-                    Verifikasi verifikasi = new Verifikasi();
-                    verifikasi.setPinjamId(Integer.valueOf(pinjamId));
-                    verifikasi.setNamaUser(namaUser);
-                    verifikasi.setNamaBuku(namaBuku);
-                    verifikasi.setTanggalKembali(tanggalKembali);
+                        String tanggalKembali = jsonObject.getString("tanggal_kembali");
+                        String pinjamId = jsonObject.getString("pinjam_id");
+                        Verifikasi verifikasi = new Verifikasi();
+                        verifikasi.setPinjamId(Integer.valueOf(pinjamId));
+                        verifikasi.setNamaUser(namaUser);
+                        verifikasi.setNamaBuku(namaBuku);
+                        verifikasi.setTanggalKembali(tanggalKembali);
 
-                    verifikasiList.add(verifikasi);
+                        verifikasiList.add(verifikasi);
+                    }
                 }
 
             } catch (IOException | JSONException e) {

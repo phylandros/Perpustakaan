@@ -47,6 +47,7 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("com.makeramen:roundedimageview:2.3.0")
     implementation ("com.github.dhaval2404:imagepicker:2.1")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
 
     val camerax_version = "1.2.0-beta02"
