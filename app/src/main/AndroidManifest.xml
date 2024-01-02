@@ -26,12 +26,7 @@
         android:theme="@style/Theme.Perpustakaan"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".admin.PengembalianActivity"
-            android:exported="false" />
-        <activity
-            android:name=".admin.PeminjamanActivity"
-            android:exported="false" />
+
         <activity
             android:name=".admin.BukuActivity"
             android:exported="false" />

@@ -11,7 +11,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -49,18 +48,21 @@
                             android:textSize="16dp"
                             android:textColor="#FFF"/>
 
-
                     </LinearLayout>
                 </LinearLayout>
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFF"
+                    >
+
                 <LinearLayout
-                    android:id="@+id/dashanggota"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/dialogbg"
                     android:orientation="vertical"
                     >
-                    <!--            MULAI KODE BUAT ISI DI TEMPAT KOSONG ANGGOTA-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -84,6 +86,32 @@
                         android:orientation="vertical"
                         >
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perpustakaan"
+                            android:textColor="#000"
+                            android:fontFamily="@font/robotobold"
+                            />
+
+                        <Spinner
+                            android:id="@+id/spperpus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:theme="@style/Base.Theme.Perpustakaan"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Nama Buku"
@@ -92,6 +120,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
+                            android:id="@+id/etnamabuku"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan nama buku"
@@ -118,6 +147,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
+                            android:id="@+id/etpengarang"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan pengarang buku"
@@ -144,6 +174,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
+                            android:id="@+id/etpenerbit"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan penerbit buku"
@@ -170,6 +201,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
+                            android:id="@+id/ettahunterbit"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan tahun terbit"
@@ -196,6 +228,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
+                            android:id="@+id/etdeskripsi"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan deskripsi buku"
@@ -203,32 +236,6 @@
                             android:textColorHint="#000"
                             android:textColor="#000"
                             android:textSize="14dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginLeft="25dp"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Gambar Buku"
-                            android:fontFamily="@font/robotoreg"
-                            android:textColor="#000"
-                            android:textStyle="bold"/>
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:hint="Masukan deskripsi buku"
-                            android:fontFamily="@font/robotoreg"
-                            android:textColorHint="#000"
-                            android:textColor="#000"
-                            android:textSize="14dp"/>
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -247,6 +254,7 @@
                             android:textStyle="bold"/>
 
                         <EditText
+                            android:id="@+id/etkategori"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan kategori buku"
@@ -256,8 +264,42 @@
                             android:textSize="14dp"/>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Gambar Buku"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txnamafile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="#000"
+                            />
+                        <Button
+                            android:id="@+id/uploadimage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Upload Image"/>
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
+                </ScrollView>
+
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/buttonPanel"
                 android:layout_width="match_parent"
@@ -265,7 +307,7 @@
                 android:layout_alignParentBottom="true">
 
                 <Button
-                    android:id="@+id/btnlogout"
+                    android:id="@+id/btntambahbuku"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"

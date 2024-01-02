@@ -78,12 +78,6 @@ public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.Pu
                         } else if (clickedItem.getName().equals("Verifikasi")) {
                             Intent verifikasiIntent = new Intent(context, VerifikasiActivity.class);
                             context.startActivity(verifikasiIntent);
-                        } else if (clickedItem.getName().equals("Peminjaman")) {
-                            Intent peminjamanIntent = new Intent(context, PeminjamanActivity.class);
-                            context.startActivity(peminjamanIntent);
-                        } else if (clickedItem.getName().equals("Pengembalian")) {
-                            Intent pengembalianIntent = new Intent(context, PengembalianActivity.class);
-                            context.startActivity(pengembalianIntent);
                         }
                     }
                 }

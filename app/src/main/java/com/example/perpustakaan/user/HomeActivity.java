@@ -51,8 +51,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        setContentView(R.layout.activity_verifikasi);
-
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
         Intent intent = getIntent();
@@ -154,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (role.equals("anggota")) {
                     dashAnggota.setVisibility(View.VISIBLE);
                     dashPustakawan.setVisibility(View.GONE);
-                } else if (role.equals("pustakawan")) {
+                } else if (role.equals("admin")) {
                     dashAnggota.setVisibility(View.GONE);
                     dashPustakawan.setVisibility(View.VISIBLE);
                 }
