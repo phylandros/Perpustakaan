@@ -1,4 +1,4 @@
-package com.example.perpustakaan;
+package com.example.perpustakaan.user;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.example.perpustakaan.R;
 
 public class MapActivity extends AppCompatActivity {
 

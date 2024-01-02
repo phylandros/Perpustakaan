@@ -1,4 +1,4 @@
-package com.example.perpustakaan;
+package com.example.perpustakaan.user;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.perpustakaan.BuildConfig;
+import com.example.perpustakaan.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,26 +28,26 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PeminjamanBukuFragment#newInstance} factory method to
+ * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PeminjamanBukuFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private String api = BuildConfig.API;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String userId;
-    private Integer perpusId;
+    private String userId, refreshToken;
     private View view;
-    public PeminjamanBukuFragment() {
+    private String api = BuildConfig.API;
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +57,11 @@ public class PeminjamanBukuFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PeminjamanBukuFragment.
+     * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PeminjamanBukuFragment newInstance(String param1, String param2) {
-        PeminjamanBukuFragment fragment = new PeminjamanBukuFragment();
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -77,15 +81,12 @@ public class PeminjamanBukuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_peminjaman_buku, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             userId = bundle.getString("userid", "");
-            perpusId = bundle.getInt("perpusid", 0);
             new FetchUserDataTask().execute(api+"/users/" + userId);
-            new FetchPerpusDataTask().execute(api+"/perpus/"+perpusId);
 
         }
 
@@ -93,14 +94,75 @@ public class PeminjamanBukuFragment extends Fragment {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Kembali ke HomeActivity
-//                Intent intent = new Intent(getActivity(), HomeActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("userid", userId);
+                startActivity(intent);
+                requireActivity().finish(); // Menutup Activity saat ini jika diinginkan
+            }
+        });
+
+
+        Button btnLogout = view.findViewById(R.id.btnlogout);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new LogoutTask().execute(api+"/logout");
             }
         });
 
         return view;
     }
+
+
+    private class LogoutTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... urls) {
+            String apiUrl = urls[0];
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL url = new URL(apiUrl);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("DELETE");
+
+                // Set headers
+                urlConnection.setRequestProperty("Cookie", "refreshToken="+refreshToken);
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                    // Logout berhasil
+                    Log.d("LogoutTask", "Logout berhasil");
+                } else {
+                    // Logout gagal
+                    Log.e("LogoutTask", "Logout gagal, response code: " + responseCode);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            getActivity().finish();
+            Toast.makeText(getActivity(),"Anda Telah Logout",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     private class FetchUserDataTask extends AsyncTask<String, Void, String> {
 
@@ -138,14 +200,26 @@ public class PeminjamanBukuFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(userData);
                 String name = jsonObject.getString("name");
+                String email = jsonObject.getString("email");
+                refreshToken = jsonObject.getString("refreshToken");
                 JSONObject biodataObject = jsonObject.getJSONObject("biodata");
+                String ktp = biodataObject.getString("ktp");
                 String nipPerpus = biodataObject.getString("nip_perpus");
+                String alamat = biodataObject.getString("alamat");
+                String phone = biodataObject.getString("phone");
 
-                TextView txNamapengguna = view.findViewById(R.id.nampengpem);
-                TextView txNoanggota = view.findViewById(R.id.noangpem);
+                TextView txNamapengguna = view.findViewById(R.id.nampeng);
+                TextView txNoanggota = view.findViewById(R.id.noang);
+                TextView txNoktp = view.findViewById(R.id.noktp);
+                TextView txAlamat = view.findViewById(R.id.alamat);
+                TextView txEmail = view.findViewById(R.id.email);
 
                 txNamapengguna.setText(name);
                 txNoanggota.setText(nipPerpus);
+                txNoktp.setText(ktp);
+                txAlamat.setText(alamat);
+                txEmail.setText(email);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -153,51 +227,5 @@ public class PeminjamanBukuFragment extends Fragment {
 
         }
     }
-
-    private class FetchPerpusDataTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String apiUrl = urls[0];
-            StringBuilder result = new StringBuilder();
-            HttpURLConnection urlConnection = null;
-
-            try {
-                URL url = new URL(apiUrl);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
-                BufferedReader bufferedReader = new BufferedReader(reader);
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    result.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-
-            return result.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String perpusData) {
-            super.onPostExecute(perpusData);
-            try {
-                JSONObject jsonObject = new JSONObject(perpusData);
-                String perpusName = jsonObject.getString("nama");
-                TextView txnamaperpus = view.findViewById(R.id.namperpus);
-                txnamaperpus.setText(perpusName);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
 
 }

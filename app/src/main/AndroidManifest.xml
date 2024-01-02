@@ -39,16 +39,16 @@
             android:name=".admin.VerifikasiActivity"
             android:exported="false" />
         <activity
-            android:name=".PeminjamanUserActivity"
+            android:name=".user.PeminjamanUserActivity"
             android:exported="false" />
         <activity
-            android:name=".ListBukuActivity"
+            android:name=".user.ListBukuActivity"
             android:exported="false" />
         <activity
-            android:name=".MapActivity"
+            android:name=".user.MapActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".user.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -58,7 +58,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".user.HomeActivity"
             android:exported="false" />
     </application>
 

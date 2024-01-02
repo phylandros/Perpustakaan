@@ -1,22 +1,22 @@
-package com.example.perpustakaan;
+package com.example.perpustakaan.user;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.perpustakaan.BuildConfig;
+import com.example.perpustakaan.R;
 import com.example.perpustakaan.adapter.AdapterLocation;
 import com.example.perpustakaan.adapter.PustakawanAdapter;
 import com.example.perpustakaan.model.LocationDataModel;
