@@ -5,57 +5,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.BukuActivity">
+    tools:context=".admin.PerpustakaanActivity">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:background="#0766AD"
+            android:orientation="vertical"
+            android:id="@+id/coordinator_layout"
+            >
             <LinearLayout
+                android:id="@+id/toolbarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/backinput"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_alignParentTop="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:src="@drawable/baseline_west_24"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="Input Perpustakaan"
+                        android:textStyle="bold"
+                        android:textSize="16dp"
+                        android:textColor="#FFF"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0766AD"
-                android:orientation="vertical"
-                android:id="@+id/coordinator_layout"
+                android:background="#FFF"
                 >
-                <LinearLayout
-                    android:id="@+id/toolbarContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:id="@+id/backinput"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_alignParentTop="true"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="27dp"
-                            android:layout_height="27dp"
-                            android:src="@drawable/baseline_west_24"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="15dp"/>
-
-                        <TextView
-                            android:id="@+id/test"
-                            android:layout_width="wrap_content"
-                            android:layout_height="27dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="15dp"
-                            android:text="Input Buku"
-                            android:textStyle="bold"
-                            android:textSize="16dp"
-                            android:textColor="#FFF"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#FFF"
-                    >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,38 +70,13 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Tambah Buku"
+                            android:text="Tambah Perpustakaan"
                             android:layout_margin="25dp"
                             android:textStyle="bold"
                             android:textColor="#0766AD"
                             android:textSize="18dp"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginLeft="25dp"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Perpustakaan"
-                            android:textColor="#000"
-                            android:fontFamily="@font/robotobold"
-                            />
-
-                        <Spinner
-                            android:id="@+id/spperpus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:theme="@style/Base.Theme.Perpustakaan"
-                            />
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -114,101 +88,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Nama Buku"
+                            android:text="Nama perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColor="#000"
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/etnamabuku"
+                            android:id="@+id/etnamaperpus"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:hint="Masukan nama buku"
-                            android:fontFamily="@font/robotoreg"
-                            android:textColorHint="#000"
-                            android:textColor="#000"
-                            android:inputType="text"
-                            android:textSize="14dp"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginLeft="25dp"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Pengarang"
-                            android:fontFamily="@font/robotoreg"
-                            android:textColor="#000"
-                            android:textStyle="bold"/>
-
-                        <EditText
-                            android:id="@+id/etpengarang"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:hint="Masukan pengarang buku"
-                            android:fontFamily="@font/robotoreg"
-                            android:inputType="text"
-                            android:textColorHint="#000"
-                            android:textColor="#000"
-                            android:textSize="14dp"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginLeft="25dp"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Penerbit"
-                            android:fontFamily="@font/robotoreg"
-                            android:textColor="#000"
-                            android:textStyle="bold"/>
-
-                        <EditText
-                            android:id="@+id/etpenerbit"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:hint="Masukan penerbit buku"
-                            android:fontFamily="@font/robotoreg"
-                            android:inputType="text"
-                            android:textColorHint="#000"
-                            android:textColor="#000"
-                            android:textSize="14dp"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginLeft="25dp"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Tahun Terbit"
-                            android:fontFamily="@font/robotoreg"
-                            android:textColor="#000"
-                            android:textStyle="bold"/>
-
-                        <EditText
-                            android:id="@+id/ettahunterbit"
-                            android:layout_width="match_parent"
-                            android:inputType="date"
-                            android:layout_height="50dp"
-                            android:hint="Masukan tahun terbit"
+                            android:hint="Masukan nama perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
                             android:textColor="#000"
@@ -226,17 +115,97 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Deskripsi Buku"
+                            android:text="Alamat perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColor="#000"
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/etdeskripsi"
+                            android:id="@+id/etalamat"
                             android:layout_width="match_parent"
-                            android:inputType="text"
                             android:layout_height="50dp"
-                            android:hint="Masukan deskripsi buku"
+                            android:hint="Masukan alamat perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColorHint="#000"
+                            android:textColor="#000"
+                            android:textSize="14dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kota perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <EditText
+                            android:id="@+id/etkota"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Masukan kota perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColorHint="#000"
+                            android:textColor="#000"
+                            android:textSize="14dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kode post perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <EditText
+                            android:id="@+id/etkodepos"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Masukan kode pos perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColorHint="#000"
+                            android:textColor="#000"
+                            android:textSize="14dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="negara"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <EditText
+                            android:id="@+id/etnegara"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Masukan negara perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
                             android:textColor="#000"
@@ -253,19 +222,45 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Kategori Buku"
+                            android:text="No. telepon"
                             android:fontFamily="@font/robotoreg"
                             android:textColor="#000"
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/etkategori"
+                            android:id="@+id/etnotelperpus"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:hint="Masukan kategori buku"
+                            android:hint="Masukan No. telepon perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
-                            android:inputType="text"
+                            android:textColor="#000"
+                            android:textSize="14dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jam operasional"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <EditText
+                            android:id="@+id/etjamoperasional"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Masukan jam operasional perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColorHint="#000"
                             android:textColor="#000"
                             android:textSize="14dp"/>
 
@@ -280,7 +275,33 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Gambar Buku"
+                            android:text="Email"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <EditText
+                            android:id="@+id/etemail"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Masukan email perpustakaan"
+                            android:fontFamily="@font/robotoreg"
+                            android:textColorHint="#000"
+                            android:textColor="#000"
+                            android:textSize="14dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Gambar Perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColor="#000"
                             android:textStyle="bold"/>
@@ -302,27 +323,27 @@
 
 
                 </LinearLayout>
-                </ScrollView>
+            </ScrollView>
 
-            </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/buttonPanel"
+        <LinearLayout
+            android:id="@+id/buttonPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btntambahperpus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-                <Button
-                    android:id="@+id/btntambahbuku"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/shapemasuk"
-                    android:textColor="#FFF"
-                    android:text="Tambah Buku"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
-            </LinearLayout>
-        </RelativeLayout>
+                android:layout_gravity="bottom"
+                android:background="@drawable/shapemasuk"
+                android:textColor="#FFF"
+                android:text="Tambah Perpustakaan"
+                android:textStyle="bold"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -162,7 +162,6 @@ public class BukuActivity extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             imagePath = getPathFromUri(selectedImageUri);
 
-            // Lakukan sesuatu dengan imagePath (path dari gambar yang dipilih)
             Toast.makeText(this, "Image Path: " + imagePath, Toast.LENGTH_SHORT).show();
         }
     }
@@ -186,7 +185,6 @@ public class BukuActivity extends AppCompatActivity {
 
         if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Jika izin diberikan, panggil method untuk membuka galeri
                 openGallery();
             } else {
                 Toast.makeText(this, "Izin akses galeri ditolak", Toast.LENGTH_SHORT).show();
@@ -285,9 +283,7 @@ public class BukuActivity extends AppCompatActivity {
                         response.append(line);
                     }
                     String serverResponse = response.toString();
-                    // Handle response from server
                 } else {
-                    // Handle error in response
                 }
 
                 outputStream.close();
@@ -295,7 +291,6 @@ public class BukuActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                // Handle error
             }
             return null;
         }
@@ -303,7 +298,6 @@ public class BukuActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            // Handle post-execution tasks if needed
         }
     }
 }

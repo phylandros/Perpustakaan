@@ -67,6 +67,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        android:id="@+id/swipeRefreshLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        >
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/listbuku"
                         android:layout_width="match_parent"
@@ -74,6 +83,7 @@
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"
                         />
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
                 </LinearLayout>
 
                 <LinearLayout

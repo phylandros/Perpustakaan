@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
@@ -40,6 +41,15 @@ public class ListBukuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_buku);
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new FetchListBukuTask().execute(api+"/perpus/"+ perpusId);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         Button btnPinjam = findViewById(R.id.btnpinjambukuuser);
         bundle = getIntent().getExtras();
