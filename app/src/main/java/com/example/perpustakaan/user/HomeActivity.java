@@ -58,8 +58,8 @@ public class HomeActivity extends AppCompatActivity {
             userid = intent.getStringExtra("userid");
             accesstoken = intent.getStringExtra("accessToken");
             new FetchUserDataTask().execute(api+"/users/" + userid);
-            new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
-            new FetchData().execute(api+"/perpus");
+//            new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
+//            new FetchData().execute(api+"/perpus");
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -99,6 +99,7 @@ public class HomeActivity extends AppCompatActivity {
         pustakawanAdapter = new PustakawanAdapter(this, pustakawanList);
         pustakawanList.add(new PustakawanModel("Buku", R.drawable.image));
         pustakawanList.add(new PustakawanModel("Verifikasi", R.drawable.image));
+        pustakawanList.add(new PustakawanModel("Perpustakaan", R.drawable.image));
         pustakawanAdapter.notifyDataSetChanged(); // Populasi data Pustakawan (sudah ada di dalam adapter)
         recyclerView.setAdapter(pustakawanAdapter);
 
@@ -152,6 +153,8 @@ public class HomeActivity extends AppCompatActivity {
                 if (role.equals("anggota")) {
                     dashAnggota.setVisibility(View.VISIBLE);
                     dashPustakawan.setVisibility(View.GONE);
+                    new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
+                    new FetchData().execute(api+"/perpus");
                 } else if (role.equals("admin")) {
                     dashAnggota.setVisibility(View.GONE);
                     dashPustakawan.setVisibility(View.VISIBLE);

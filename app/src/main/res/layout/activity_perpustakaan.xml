@@ -101,6 +101,7 @@
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
                             android:textColor="#000"
+                            android:inputType="text"
                             android:textSize="14dp"/>
 
                     </LinearLayout>
@@ -121,13 +122,14 @@
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/etalamat"
+                            android:id="@+id/etalamatperpus"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan alamat perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
                             android:textColor="#000"
+                            android:inputType="text"
                             android:textSize="14dp"/>
 
                     </LinearLayout>
@@ -148,13 +150,14 @@
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/etkota"
+                            android:id="@+id/etkotaperpus"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan kota perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
                             android:textColor="#000"
+                            android:inputType="text"
                             android:textSize="14dp"/>
 
                     </LinearLayout>
@@ -181,6 +184,7 @@
                             android:hint="Masukan kode pos perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
+                            android:inputType="number"
                             android:textColor="#000"
                             android:textSize="14dp"/>
 
@@ -208,6 +212,7 @@
                             android:hint="Masukan negara perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
+                            android:inputType="text"
                             android:textColor="#000"
                             android:textSize="14dp"/>
                     </LinearLayout>
@@ -234,6 +239,7 @@
                             android:hint="Masukan No. telepon perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
+                            android:inputType="number"
                             android:textColor="#000"
                             android:textSize="14dp"/>
 
@@ -261,6 +267,7 @@
                             android:hint="Masukan jam operasional perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
+                            android:inputType="text"
                             android:textColor="#000"
                             android:textSize="14dp"/>
 
@@ -281,12 +288,13 @@
                             android:textStyle="bold"/>
 
                         <EditText
-                            android:id="@+id/etemail"
+                            android:id="@+id/etemailperpus"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:hint="Masukan email perpustakaan"
                             android:fontFamily="@font/robotoreg"
                             android:textColorHint="#000"
+                            android:inputType="textEmailAddress"
                             android:textColor="#000"
                             android:textSize="14dp"/>
 
@@ -317,7 +325,9 @@
                             android:id="@+id/uploadimage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Upload Image"/>
+                            android:text="Upload Image"
+                            android:layout_marginBottom="55dp"
+                            />
 
                     </LinearLayout>
 

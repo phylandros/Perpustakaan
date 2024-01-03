@@ -296,7 +296,9 @@
                             android:id="@+id/uploadimage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Upload Image"/>
+                            android:text="Upload Image"
+                            android:layout_marginBottom="55dp"
+                            />
 
                     </LinearLayout>
 
