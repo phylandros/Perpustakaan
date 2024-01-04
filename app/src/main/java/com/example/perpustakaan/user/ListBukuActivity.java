@@ -3,7 +3,9 @@ package com.example.perpustakaan.user;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +32,7 @@ import java.util.List;
 
 public class ListBukuActivity extends AppCompatActivity {
     private Integer perpusId;
-    private String userid;
+    private String userid, namaperpus;
     private String api = BuildConfig.API;
     private RecyclerView recyclerView;
     private List<BukuModel> dataList = new ArrayList<>();
@@ -47,8 +49,22 @@ public class ListBukuActivity extends AppCompatActivity {
         if (bundle != null){
             perpusId = bundle.getInt("perpusId",0);
             userid = bundle.getString("userid","");
+            namaperpus = bundle.getString("nama","");
             new FetchListBukuTask().execute(api+"/perpus/"+ perpusId);
         }
+
+        LinearLayout btnback = findViewById(R.id.backlist);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListBukuActivity.this, MapActivity.class);
+                intent.putExtra("userid", userid);
+                intent.putExtra("perpusId", perpusId);
+                intent.putExtra("nama", namaperpus);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         btnPinjam.setOnClickListener(v -> {
             Integer[] selectedBookIds = adapter.getSelectedBukuIds().toArray(new Integer[0]);
@@ -124,11 +140,16 @@ public class ListBukuActivity extends AppCompatActivity {
                 JSONObject bukuObject = bukusArray.getJSONObject(i);
                 int bukus = bukuObject.getInt("buku_id");
                 int image = R.drawable.content; // Ganti dengan sumber gambar yang sesuai
+
+                String imagePath = bukuObject.getString("gambar");
+                String[] pathParts = imagePath.split("\\\\"); // Melakukan split path berdasarkan backslash
+                String imageName = pathParts[pathParts.length - 1];
+
                 String name = bukuObject.getString("judul");
                 String deskripsi = bukuObject.getString("deskripsi");
                 boolean selected = false; // Default value untuk selected
 
-                BukuModel buku = new BukuModel(bukus, image, name, deskripsi, selected);
+                BukuModel buku = new BukuModel(bukus, api+"/buku/"+imageName, name, deskripsi, selected);
                 dataList.add(buku);
             }
 

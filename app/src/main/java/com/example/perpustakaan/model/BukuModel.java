@@ -4,7 +4,7 @@ public class BukuModel {
 
 
     private int bukuid;
-    private int gambar;
+    private String imageUrl;
     private String judul;
     private String deskripsi;
     private boolean isSelected;
@@ -12,20 +12,20 @@ public class BukuModel {
     public BukuModel() {
     }
 
-    public BukuModel(int bukuid,int gambar, String judul, String deskripsi, boolean isSelected) {
+    public BukuModel(int bukuid,String imageUrl, String judul, String deskripsi, boolean isSelected) {
         this.bukuid = bukuid;
-        this.gambar = gambar;
+        this.imageUrl = imageUrl;
         this.judul = judul;
         this.deskripsi = deskripsi;
         this.isSelected = false;
     }
 
-    public int getGambar() {
-        return gambar;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setGambar(int gambar) {
-        this.gambar = gambar;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getJudul() {

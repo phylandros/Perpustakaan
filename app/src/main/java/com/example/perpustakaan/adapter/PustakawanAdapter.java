@@ -41,15 +41,14 @@ public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.Pu
     public void onBindViewHolder(@NonNull PustakawanViewHolder holder, int position) {
         PustakawanModel pustakawan = pustakawanList.get(position);
 
-        // Set text to TextView
         holder.textView.setText(pustakawan.getName());
 
-        // Load image using Glide from resource drawable
         Glide.with(context)
                 .load(pustakawan.getImageResource())
                 .placeholder(R.drawable.image)
                 .error(R.drawable.image)
                 .into(holder.imageView);
+
 
     }
 

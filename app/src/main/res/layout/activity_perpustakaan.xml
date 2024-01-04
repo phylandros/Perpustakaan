@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:id="@+id/backinput"
+                    android:id="@+id/backinputperpustakaan"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_alignParentTop="true"

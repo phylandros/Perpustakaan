@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.model.BukuModel;
 
@@ -88,9 +89,17 @@ public class BukuAdapter extends RecyclerView.Adapter<BukuAdapter.BukuViewHolder
         }
 
         public void bind(BukuModel buku) {
-            imageView.setBackground(ContextCompat.getDrawable(context, buku.getGambar()));
+//            imageView.setBackground(ContextCompat.getDrawable(context, buku.getGambar()));
+
+            Glide.with(context)
+                    .load(buku.getImageUrl()) // Gunakan URL dari BukuModel Anda
+                    .placeholder(R.drawable.image) // Placeholder saat gambar sedang dimuat
+                    .error(R.drawable.image) // Gambar jika terjadi kesalahan
+                    .into(imageView);
+
             nameTextView.setText(buku.getJudul());
             deskripsiTextView.setText(buku.getDeskripsi());
+
             if (buku.isSelected()) {
                 checkImageView.setImageResource(R.drawable.checklist);
             } else {

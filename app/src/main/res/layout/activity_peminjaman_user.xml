@@ -22,7 +22,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout
-                        android:id="@+id/backinput"
+                        android:id="@+id/backpinjamuser"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:layout_alignParentTop="true"
@@ -182,7 +182,7 @@
                             android:layout_alignParentBottom="true">
 
                             <Button
-                                android:id="@+id/btnlnjt"
+                                android:id="@+id/btnbacklist"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"

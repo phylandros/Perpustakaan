@@ -1,24 +1,27 @@
 package com.example.perpustakaan.model;
 
 public class LocationDataModel {
-    private int imageResource;
+    private String imageUrl;
     private String title;
     private String location;
     private String schedule;
     private int perpusid;
 
-    public LocationDataModel(int imageResource, int perpusid ,String title, String location, String schedule) {
-        this.imageResource = imageResource;
+    public LocationDataModel(String imageUrl, int perpusid , String title, String location, String schedule) {
+        this.imageUrl = imageUrl;
         this.perpusid = perpusid;
         this.title = title;
         this.location = location;
         this.schedule = schedule;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
     public String getTitle() {
         return title;
     }

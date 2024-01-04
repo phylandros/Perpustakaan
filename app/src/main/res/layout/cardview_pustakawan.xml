@@ -26,7 +26,7 @@
             android:layout_marginRight="10dp"
             android:layout_gravity="center"
             android:padding="15dp"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:textStyle="bold"
             />
 

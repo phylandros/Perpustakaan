@@ -39,7 +39,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private String userid, accesstoken, role;
+    String userid, accesstoken, role;
     private Integer perpusId;
     private String api = BuildConfig.API;
     private RecyclerView recyclerView;
@@ -58,8 +58,6 @@ public class HomeActivity extends AppCompatActivity {
             userid = intent.getStringExtra("userid");
             accesstoken = intent.getStringExtra("accessToken");
             new FetchUserDataTask().execute(api+"/users/" + userid);
-//            new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
-//            new FetchData().execute(api+"/perpus");
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,9 +95,9 @@ public class HomeActivity extends AppCompatActivity {
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         pustakawanAdapter = new PustakawanAdapter(this, pustakawanList);
-        pustakawanList.add(new PustakawanModel("Buku", R.drawable.image));
-        pustakawanList.add(new PustakawanModel("Verifikasi", R.drawable.image));
-        pustakawanList.add(new PustakawanModel("Perpustakaan", R.drawable.image));
+        pustakawanList.add(new PustakawanModel("Buku", R.drawable.buku));
+        pustakawanList.add(new PustakawanModel("Verifikasi", R.drawable.verified));
+        pustakawanList.add(new PustakawanModel("Perpustakaan", R.drawable.library));
         pustakawanAdapter.notifyDataSetChanged(); // Populasi data Pustakawan (sudah ada di dalam adapter)
         recyclerView.setAdapter(pustakawanAdapter);
 
@@ -255,8 +253,12 @@ public class HomeActivity extends AppCompatActivity {
                 String name = jsonObject.getString("nama");
                 String address = jsonObject.getString("alamat");
                 String operatingHours = jsonObject.getString("jam_operasional");
-                Integer image = R.drawable.image;
-                dataList.add(new LocationDataModel(image, perpusid, name, address, operatingHours));
+
+                String imagePath = jsonObject.getString("gambar");
+                String[] pathParts = imagePath.split("\\\\"); // Melakukan split path berdasarkan backslash
+                String imageName = pathParts[pathParts.length - 1];
+
+                dataList.add(new LocationDataModel(api+"/perpus/"+imageName, perpusid, name, address, operatingHours));
             }
 
             runOnUiThread(() -> {

@@ -1,7 +1,10 @@
 package com.example.perpustakaan.admin;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +15,7 @@ import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.adapter.VerifikasiAdapter;
 import com.example.perpustakaan.model.Verifikasi;
+import com.example.perpustakaan.user.HomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +47,15 @@ public class VerifikasiActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         new FetchDataTask().execute(api+"/pinjam"); // Ganti dengan URL API Anda
+
+        LinearLayout btnback = findViewById(R.id.backverifikasi);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VerifikasiActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

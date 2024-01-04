@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.model.LocationDataModel;
 
@@ -56,10 +57,16 @@ public class AdapterLocation extends RecyclerView.Adapter<AdapterLocation.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         LocationDataModel currentItem = mData.get(position);
 
-        holder.imageView.setImageResource(currentItem.getImageResource());
+//        holder.imageView.setImageResource(currentItem.getImageUrl());
         holder.textViewTitle.setText(currentItem.getTitle());
         holder.textViewLocation.setText(currentItem.getLocation());
         holder.textViewSchedule.setText(currentItem.getSchedule());
+
+        Glide.with(holder.itemView.getContext())
+                .load(currentItem.getImageUrl())
+                .placeholder(R.drawable.image) // Placeholder saat gambar sedang dimuat
+                .error(R.drawable.image) // Gambar jika terjadi kesalahan
+                .into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

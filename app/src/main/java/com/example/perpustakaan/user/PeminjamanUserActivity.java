@@ -1,5 +1,6 @@
 package com.example.perpustakaan.user;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,29 @@ public class PeminjamanUserActivity extends AppCompatActivity {
             userid = bundle.getString("userid");
         }
 
+        LinearLayout btnback = findViewById(R.id.backpinjamuser);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PeminjamanUserActivity.this, ListBukuActivity.class);
+                intent.putExtra("userid", userid);
+                intent.putExtra("perpusId", perpusId);
+                startActivity(intent);
+            }
+        });
+
+        Button btnBackList = findViewById(R.id.btnbacklist);
+        btnBackList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PeminjamanUserActivity.this, ListBukuActivity.class);
+                intent.putExtra("userid", userid);
+                intent.putExtra("perpusId", perpusId);
+                startActivity(intent);
+            }
+        });
+
+
         Button tambahPinjamButton = findViewById(R.id.tambahpinjam);
         tambahPinjamButton.setOnClickListener(v -> {
             EditText editTextTanggalKembali = findViewById(R.id.tglkembalipinjam);
@@ -75,6 +100,8 @@ public class PeminjamanUserActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
     }
 
@@ -271,12 +298,10 @@ public class PeminjamanUserActivity extends AppCompatActivity {
                     TextView textVerif = findViewById(R.id.textverif);
                     if (isVerif == 1) {
                         textVerif.setText("Berhasil di verifikasi");
-//                        textVerif.setTextColor("#65B741");
                         textVerif.setTextColor(getResources().getColor(R.color.hijau));
 
                     } else {
                         textVerif.setText("Belum di verifikasi");
-//                        textVerif.setTextColor("#B80000");
                         textVerif.setTextColor(getResources().getColor(R.color.merah));
                     }
                 } catch (JSONException e) {

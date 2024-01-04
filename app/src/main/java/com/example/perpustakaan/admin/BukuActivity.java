@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
+import com.example.perpustakaan.user.HomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +61,15 @@ public class BukuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openGallery();
+            }
+        });
+
+        LinearLayout btnback = findViewById(R.id.backinputbuku);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BukuActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
 

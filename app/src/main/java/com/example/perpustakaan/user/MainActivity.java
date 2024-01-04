@@ -1,14 +1,18 @@
 package com.example.perpustakaan.user;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,6 +46,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 2;
     private Button btnWelkom;
     private BottomSheetDialog dialog;
     private String api = BuildConfig.API;
@@ -50,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private String userId, accessToken;
     private EditText namaReg, emailReg, passReg, conpassReg, noktpReg, alamatReg, notelReg;
     private ImageView imageUser;
-    private static final int PICK_IMAGE = 1;
     TextView test;
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,15 +213,18 @@ public class MainActivity extends AppCompatActivity {
                 URL url = new URL(api+"/users");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
+                String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
+                conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                 conn.setDoOutput(true);
+                OutputStream outputStream = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
                 JSONObject postData = new JSONObject();
                 postData.put("nama", params[0]);
                 postData.put("email", params[1]);
                 postData.put("password", params[2]);
                 postData.put("confPassword", params[3]);
-                postData.put("gambar", "");
+                postData.put("gambar", params[4]);
                 postData.put("nip_perpus", String.valueOf(System.currentTimeMillis()));
                 postData.put("ktp", params[5]);
                 postData.put("alamat", params[6]);
@@ -305,15 +314,9 @@ public class MainActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.with(MainActivity.this)
-                        .crop()
-                        .compress(1024)
-                        .maxResultSize(1080, 1080)
-                        .start();
-
+                openGallery(); // Panggil metode untuk membuka galeri bawaan
             }
         });
-
 
         btnLanjut2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,11 +325,9 @@ public class MainActivity extends AppCompatActivity {
                 String alamat = alamatReg.getText().toString().trim();
                 String notel = notelReg.getText().toString().trim();
                 if (!ktp.isEmpty() && !alamat.isEmpty() && !notel.isEmpty()) {
-                    imageUser.setDrawingCacheEnabled(true);
-                    Bitmap bitmap = imageUser.getDrawingCache();
-                    File tempFile = saveBitmapToFile(bitmap);
+//                    imageUser.setDrawingCacheEnabled(true);
 
-                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword, tempFile.getPath(), ktp, alamat, notel);
+                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword, imagePath, ktp, alamat, notel);
                     showRegisterDoneDialog();
                 } else {
                     Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
@@ -336,27 +337,47 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private File saveBitmapToFile(Bitmap bitmap) {
-        // Simpan gambar sebagai file sementara
-        File tempFile = null;
-        try {
-            tempFile = File.createTempFile("tempImage", ".png", getCacheDir());
-            FileOutputStream fos = new FileOutputStream(tempFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return tempFile;
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            Uri uri = data.getData();
-            imageUser.setImageURI(uri);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+            imagePath = getPathFromUri(selectedImageUri);
+
+            Toast.makeText(this, "Image Path: " + imagePath, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getPathFromUri(Uri uri) {
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imagePath = cursor.getString(columnIndex);
+            cursor.close();
+            return imagePath;
+        }
+        return null;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                Toast.makeText(this, "Izin akses galeri ditolak", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
