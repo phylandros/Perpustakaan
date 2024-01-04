@@ -32,7 +32,9 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -204,67 +206,115 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private class PostRegisterAsyncTask extends AsyncTask<String, Void, String> {
+    private class PostRegisterAsyncTask extends AsyncTask<String, Void, Void> {
+
         @Override
-        protected String doInBackground(String... params) {
-            String response = "";
+        protected Void doInBackground(String... params) {
+            if (params.length < 9) {
+                return null;
+            }
+
+            String nama = params[0];
+            String email = params[1];
+            String password = params[2];
+            String confPassword = params[3];
+            String imagePath = params[4];
+            String nip_perpus = String.valueOf(System.currentTimeMillis());
+            String ktp = params[6];
+            String alamat = params[7];
+            String phone = params[8];
 
             try {
                 URL url = new URL(api+"/users");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
-                conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-                conn.setDoOutput(true);
-                OutputStream outputStream = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=----Boundary");
 
-                JSONObject postData = new JSONObject();
-                postData.put("nama", params[0]);
-                postData.put("email", params[1]);
-                postData.put("password", params[2]);
-                postData.put("confPassword", params[3]);
-                postData.put("gambar", params[4]);
-                postData.put("nip_perpus", String.valueOf(System.currentTimeMillis()));
-                postData.put("ktp", params[5]);
-                postData.put("alamat", params[6]);
-                postData.put("phone", params[7]);
+                String boundary = "----Boundary";
+                String lineEnd = "\r\n";
 
-                OutputStream outputStream = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                writer.write(postData.toString());
-                writer.flush();
-                writer.close();
-                outputStream.close();
+                File imageFile = new File(imagePath);
+                FileInputStream fileInputStream = new FileInputStream(imageFile);
 
-                int responseCode = conn.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    while ((line = br.readLine()) != null) {
-                        response += line;
-                    }
-                    br.close();
-                } else {
-                    response = "";
+                String data = "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"nama\"" + lineEnd +
+                        lineEnd +
+                        nama + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"email\"" + lineEnd +
+                        lineEnd +
+                        email + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"password\"" + lineEnd +
+                        lineEnd +
+                        password + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"confPassword\"" + lineEnd +
+                        lineEnd +
+                        confPassword + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"nip_perpus\"" + lineEnd +
+                        lineEnd +
+                        nip_perpus + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"ktp\"" + lineEnd +
+                        lineEnd +
+                        ktp + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"alamat\"" + lineEnd +
+                        lineEnd +
+                        alamat + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"phone\"" + lineEnd +
+                        lineEnd +
+                        phone + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"gambar\"; filename=\"" + imageFile.getName() + "\"" + lineEnd +
+                        "Content-Type: image/jpeg" + lineEnd +
+                        lineEnd;
+
+                byte[] dataBytes = data.getBytes();
+
+                DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+                outputStream.write(dataBytes);
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
                 }
-                conn.disconnect();
-            } catch (Exception e) {
+
+                outputStream.writeBytes(lineEnd);
+                outputStream.writeBytes("------Boundary--" + lineEnd);
+
+                outputStream.flush();
+                fileInputStream.close();
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    StringBuilder response = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    String serverResponse = response.toString();
+                } else {
+                }
+
+                outputStream.close();
+                connection.disconnect();
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            return response;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            // Handle response dari server
-            try {
-                JSONObject jsonResponse = new JSONObject(result);
-                // Lakukan sesuatu dengan response JSON dari server
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.e("JSON Parse Error", "Error parsing JSON response");
-            }
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 
@@ -380,8 +430,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     public void showRegisterDoneDialog() {
         // Tampilkan dialog register done (bsdregisdone)
