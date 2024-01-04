@@ -42,15 +42,6 @@ public class ListBukuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_buku);
 
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new FetchListBukuTask().execute(api+"/perpus/"+ perpusId);
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
         Button btnPinjam = findViewById(R.id.btnpinjambukuuser);
         bundle = getIntent().getExtras();
         if (bundle != null){

@@ -220,7 +220,7 @@ public class PeminjamanUserActivity extends AppCompatActivity {
         try {
             postData.put("tanggal_pinjam", currentDate);
             postData.put("tanggal_kembali", tanggalKembali);
-            postData.put("keterangan", "Belum di verifikasi");
+            postData.put("keterangan", "");
             postData.put("user_id", user);
             postData.put("perpus_id", perpus);
             postData.put("buku_id", bukuId);

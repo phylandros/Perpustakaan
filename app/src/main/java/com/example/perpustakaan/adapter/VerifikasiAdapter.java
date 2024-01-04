@@ -89,7 +89,7 @@ public class VerifikasiAdapter extends RecyclerView.Adapter<VerifikasiAdapter.Ve
                     Verifikasi verifikasi = verifikasiList.get(position);
                     int pinjamId = getPinjamIdFromVerifikasi(verifikasi); // Fungsi untuk mendapatkan pinjam_id
                     if (pinjamId != 0) {
-//                        sendDeleteRequest(pinjamId);
+                        sendDeleteRequest(pinjamId);
                     }
                     Toast.makeText(itemView.getContext(), "Peminjaman Dibatalkan", Toast.LENGTH_SHORT).show();
                 }
@@ -143,51 +143,41 @@ public class VerifikasiAdapter extends RecyclerView.Adapter<VerifikasiAdapter.Ve
             }.execute(pinjamId);
         }
 
+        private void sendDeleteRequest(int pinjamId) {
+            new AsyncTask<Integer, Void, Integer>() {
+                @Override
+                protected Integer doInBackground(Integer... params) {
+                    int pinjamId = params[0];
+                    try {
+                        URL url = new URL(api + "/pinjam/" + pinjamId);
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.setRequestMethod("DELETE");
 
-//        private void sendDeleteRequest(int pinjamId) {
-//            new AsyncTask<Integer, Void, Integer>() {
-//                @Override
-//                protected Integer doInBackground(Integer... params) {
-//                    int pinjamId = params[0];
-//                    try {
-//                        URL url = new URL(api+"/pinjam/" + pinjamId);
-//                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//                        connection.setRequestMethod("DELETE");
-//                        connection.setDoOutput(true);
-//                        connection.setRequestProperty("Content-Type", "application/json");
-//
-//                        // Tambahkan payload PATCH di sini jika diperlukan
-//                        String payload = "{\"isVerif\": 1}";
-//                        OutputStream os = connection.getOutputStream();
-//                        os.write(payload.getBytes());
-//                        os.flush();
-//                        os.close();
-//
-//                        int responseCode = connection.getResponseCode();
-//                        connection.disconnect();
-//
-//                        return responseCode;
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        return null;
-//                    }
-//                }
-//
-//                @Override
-//                protected void onPostExecute(Integer responseCode) {
-//                    if (responseCode != null) {
-//                        if (responseCode == HttpURLConnection.HTTP_OK) {
-//                            Toast.makeText(itemView.getContext(), "Respon Peminjaman Berhasil", Toast.LENGTH_SHORT).show();
-//
-//                        } else {
-//                            Toast.makeText(itemView.getContext(), "Respon Peminjaman Dibatalkan", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        Toast.makeText(itemView.getContext(), "Ada kesalahan dalam proses", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }.execute(pinjamId);
-//        }
+                        int responseCode = connection.getResponseCode();
+                        connection.disconnect();
+
+                        return responseCode;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(Integer responseCode) {
+                    if (responseCode != null) {
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            Toast.makeText(itemView.getContext(), "Peminjaman Berhasil Dibatalkan", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(itemView.getContext(), "Gagal Membatalkan Peminjaman", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(itemView.getContext(), "Terjadi kesalahan dalam proses", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.execute(pinjamId);
+        }
+
 
     }
 }

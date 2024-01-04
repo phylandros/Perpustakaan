@@ -37,6 +37,7 @@ public class PerpustakaanActivity extends AppCompatActivity {
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 2;
     private EditText etNamaPerpus, etAlamat, etKota, etKodePos, etNegara, etNoTelPerpus,etJamOperasional,etEmail;
     private String imagePath;
+    Button tambahperpus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,7 @@ public class PerpustakaanActivity extends AppCompatActivity {
         etJamOperasional = findViewById(R.id.etjamoperasional);
         etEmail = findViewById(R.id.etemailperpus);
 
-        Button tambahperpus = findViewById(R.id.btntambahperpus);
+        tambahperpus = findViewById(R.id.btntambahperpus);
         tambahperpus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +74,7 @@ public class PerpustakaanActivity extends AppCompatActivity {
                 String jamOperasional = etJamOperasional.getText().toString();
                 String email = etEmail.getText().toString();
 
-                new KirimDataPerpustakaanTask().execute(nama, alamat, kota, imagePath, kodePos, negara, telepon, jamOperasional, email);
+                new PostPerpusAsyncTask().execute(nama, alamat, kota, imagePath, kodePos, negara, telepon, jamOperasional, email);
             }
         });
 
@@ -125,7 +126,7 @@ public class PerpustakaanActivity extends AppCompatActivity {
         }
     }
 
-    private class KirimDataPerpustakaanTask extends AsyncTask<String, Void, Void> {
+    private class PostPerpusAsyncTask extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... params) {
@@ -144,75 +145,94 @@ public class PerpustakaanActivity extends AppCompatActivity {
             String email = params[8];
 
             try {
-                URL url = new URL(api + "/perpus");
+                URL url = new URL(api + "/perpus" );
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=*****");
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=----Boundary");
 
-                File file = new File(imagePath);
-                FileInputStream fileInputStream = new FileInputStream(file);
+                String boundary = "----Boundary";
+                String lineEnd = "\r\n";
+
+                File imageFile = new File(imagePath);
+                FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+                String data = "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"nama\"" + lineEnd +
+                        lineEnd +
+                        nama + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"alamat\"" + lineEnd +
+                        lineEnd +
+                        alamat + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"kota\"" + lineEnd +
+                        lineEnd +
+                        kota + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"kode_pos\"" + lineEnd +
+                        lineEnd +
+                        kodePos + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"negara\"" + lineEnd +
+                        lineEnd +
+                        negara + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"telepon\"" + lineEnd +
+                        lineEnd +
+                        telepon + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"jam_operasional\"" + lineEnd +
+                        lineEnd +
+                        jamOperasional + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"email\"" + lineEnd +
+                        lineEnd +
+                        email + lineEnd +
+                        "------Boundary" + lineEnd +
+                        "Content-Disposition: form-data; name=\"gambar\"; filename=\"" + imageFile.getName() + "\"" + lineEnd +
+                        "Content-Type: image/jpeg" + lineEnd +
+                        lineEnd;
+
+                byte[] dataBytes = data.getBytes();
 
                 DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+                outputStream.write(dataBytes);
 
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"nama\"\r\n\r\n");
-                outputStream.writeBytes(nama + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"alamat\"\r\n\r\n");
-                outputStream.writeBytes(alamat + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"kota\"\r\n\r\n");
-                outputStream.writeBytes(kota + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"kode_pos\"\r\n\r\n");
-                outputStream.writeBytes(kodePos + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"negara\"\r\n\r\n");
-                outputStream.writeBytes(negara + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"telepon\"\r\n\r\n");
-                outputStream.writeBytes(telepon + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"jam_operasional\"\r\n\r\n");
-                outputStream.writeBytes(jamOperasional + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"email\"\r\n\r\n");
-                outputStream.writeBytes(email + "\r\n");
-
-                outputStream.writeBytes("------*****\r\n");
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"gambar\";filename=\"" + file.getName() + "\"\r\n");
-                outputStream.writeBytes("Content-Type: image/jpeg\r\n\r\n");
-
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                 }
 
-                outputStream.writeBytes("\r\n--*****--\r\n");
-                outputStream.flush();
-                outputStream.close();
+                outputStream.writeBytes(lineEnd);
+                outputStream.writeBytes("------Boundary--" + lineEnd);
 
-                int statusCode = connection.getResponseCode();
-                if (statusCode == HttpURLConnection.HTTP_OK) {
-                    // Proses respons dari server jika diperlukan
+                outputStream.flush();
+                fileInputStream.close();
+
+                int responseCode = connection.getResponseCode();
+                String serverResponse;
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    StringBuilder response = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    serverResponse = response.toString();
+                    Log.d("ServerResponse", serverResponse); // Menambahkan log untuk respons dari server
+                } else {
+                    Log.e("ServerResponse", "Failed to fetch server response. Response code: " + responseCode);
                 }
 
-                fileInputStream.close();
+
+                outputStream.close();
                 connection.disconnect();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
