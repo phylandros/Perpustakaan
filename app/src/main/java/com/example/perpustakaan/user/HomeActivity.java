@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import com.example.perpustakaan.adapter.PustakawanAdapter;
 import com.example.perpustakaan.admin.VerifikasiActivity;
 import com.example.perpustakaan.model.LocationDataModel;
 import com.example.perpustakaan.model.PustakawanModel;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,6 +146,13 @@ public class HomeActivity extends AppCompatActivity {
                 role = jsonObject.getString("role");
                 TextView txNamapengguna = findViewById(R.id.namauser);
                 txNamapengguna.setText(name);
+                String imagePath = jsonObject.getJSONObject("biodata").getString("gambar");
+                String[] pathParts = imagePath.split("\\\\"); // Melakukan split path berdasarkan backslash
+                String imageName = pathParts[pathParts.length - 1];
+
+                ImageView imageUser = findViewById(R.id.imageuser);
+//                imageUser.setImageResource(api+"/profile/"+imageName);
+                Picasso.get().load(api+"/profile/"+imageName).into(imageUser);
 
                 LinearLayout dashAnggota = findViewById(R.id.dashanggota);
                 LinearLayout dashPustakawan = findViewById(R.id.dashpustakawan);

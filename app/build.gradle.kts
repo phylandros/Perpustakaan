@@ -48,6 +48,7 @@ dependencies {
     implementation ("com.makeramen:roundedimageview:2.3.0")
     implementation ("com.github.dhaval2404:imagepicker:2.1")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation ("com.squareup.picasso:picasso:2.71828")
 
 
     val camerax_version = "1.2.0-beta02"

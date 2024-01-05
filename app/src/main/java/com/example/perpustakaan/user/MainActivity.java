@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -218,11 +221,12 @@ public class MainActivity extends AppCompatActivity {
             String email = params[1];
             String password = params[2];
             String confPassword = params[3];
-            String imagePath = params[4];
-            String nip_perpus = String.valueOf(System.currentTimeMillis());
-            String ktp = params[6];
-            String alamat = params[7];
-            String phone = params[8];
+            String nip_perpus = params[4];
+            String ktp = params[5];
+            String alamat = params[6];
+            String phone = params[7];
+            String imagePath = params[8];
+
 
             try {
                 URL url = new URL(api+"/users");
@@ -374,10 +378,11 @@ public class MainActivity extends AppCompatActivity {
                 String ktp = noktpReg.getText().toString().trim();
                 String alamat = alamatReg.getText().toString().trim();
                 String notel = notelReg.getText().toString().trim();
+                String nip = String.valueOf(System.currentTimeMillis());
                 if (!ktp.isEmpty() && !alamat.isEmpty() && !notel.isEmpty()) {
 //                    imageUser.setDrawingCacheEnabled(true);
 
-                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword, imagePath, ktp, alamat, notel);
+                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword,nip, ktp, alamat, notel,imagePath);
                     showRegisterDoneDialog();
                 } else {
                     Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
@@ -399,11 +404,44 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri selectedImageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                bitmap = rotateImageIfRequired(bitmap, selectedImageUri);
+                imageUser.setImageBitmap(bitmap);
+                imageUser.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             imagePath = getPathFromUri(selectedImageUri);
-
             Toast.makeText(this, "Image Path: " + imagePath, Toast.LENGTH_SHORT).show();
         }
     }
+
+    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
+        InputStream input = this.getContentResolver().openInputStream(selectedImage);
+        ExifInterface ei = new ExifInterface(input);
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270);
+            default:
+                return img;
+        }
+    }
+
+    private Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
 
     private String getPathFromUri(Uri uri) {
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
