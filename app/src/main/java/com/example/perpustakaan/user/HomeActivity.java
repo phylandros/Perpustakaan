@@ -1,6 +1,8 @@
 package com.example.perpustakaan.user;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.adapter.AdapterLocation;
@@ -25,6 +29,7 @@ import com.example.perpustakaan.admin.VerifikasiActivity;
 import com.example.perpustakaan.model.LocationDataModel;
 import com.example.perpustakaan.model.PustakawanModel;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -147,12 +152,15 @@ public class HomeActivity extends AppCompatActivity {
                 TextView txNamapengguna = findViewById(R.id.namauser);
                 txNamapengguna.setText(name);
                 String imagePath = jsonObject.getJSONObject("biodata").getString("gambar");
-                String[] pathParts = imagePath.split("\\\\"); // Melakukan split path berdasarkan backslash
-                String imageName = pathParts[pathParts.length - 1];
+                String[] pathParts = imagePath.split("/");
+                String imageNameuser = pathParts[pathParts.length - 1];
 
                 ImageView imageUser = findViewById(R.id.imageuser);
-//                imageUser.setImageResource(api+"/profile/"+imageName);
-                Picasso.get().load(api+"/profile/"+imageName).into(imageUser);
+                Glide.with(HomeActivity.this)
+                        .load(api+"/profile/"+imageNameuser)
+                        .centerCrop()
+                        .signature(new ObjectKey(System.currentTimeMillis()))
+                        .into(imageUser);
 
                 LinearLayout dashAnggota = findViewById(R.id.dashanggota);
                 LinearLayout dashPustakawan = findViewById(R.id.dashpustakawan);
@@ -160,7 +168,6 @@ public class HomeActivity extends AppCompatActivity {
                 if (role.equals("anggota")) {
                     dashAnggota.setVisibility(View.VISIBLE);
                     dashPustakawan.setVisibility(View.GONE);
-                    new FetchPerpusDataTask().execute(api+"/perpus/"+ perpusId);
                     new FetchData().execute(api+"/perpus");
                 } else if (role.equals("admin")) {
                     dashAnggota.setVisibility(View.GONE);
@@ -173,50 +180,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private class FetchPerpusDataTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String apiUrl = urls[0];
-            StringBuilder result = new StringBuilder();
-            HttpURLConnection urlConnection = null;
-
-            try {
-                URL url = new URL(apiUrl);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
-                BufferedReader bufferedReader = new BufferedReader(reader);
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    result.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-
-            return result.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String userData) {
-            super.onPostExecute(userData);
-            try {
-                JSONObject jsonObject = new JSONObject(userData);
-                String name = jsonObject.getString("name");
-                TextView txNamapengguna = findViewById(R.id.namauser);
-                txNamapengguna.setText(name);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public class FetchData extends AsyncTask<String, Void, String> {
 
@@ -258,16 +221,18 @@ public class HomeActivity extends AppCompatActivity {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Integer perpusid = jsonObject.getInt("perpus_id");
+                perpusId = jsonObject.getInt("perpus_id");
+                String imagePath = jsonObject.getString("gambar");
                 String name = jsonObject.getString("nama");
                 String address = jsonObject.getString("alamat");
                 String operatingHours = jsonObject.getString("jam_operasional");
 
-                String imagePath = jsonObject.getString("gambar");
-                String[] pathParts = imagePath.split("\\\\"); // Melakukan split path berdasarkan backslash
+                String[] pathParts = imagePath.split("/");
                 String imageName = pathParts[pathParts.length - 1];
 
-                dataList.add(new LocationDataModel(api+"/perpus/"+imageName, perpusid, name, address, operatingHours));
+
+
+                dataList.add(new LocationDataModel(api+"/perpus/"+imageName, perpusId, name, address, operatingHours));
             }
 
             runOnUiThread(() -> {
@@ -281,7 +246,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(int position) {
                         LocationDataModel clickedItem = dataList.get(position);
-                        int perpusId = clickedItem.getPerpusid();
+                        perpusId = clickedItem.getPerpusid();
                         String perpusnama = clickedItem.getTitle();
 
                         // Pindah ke MapActivity dan kirim perpusId sebagai argumen

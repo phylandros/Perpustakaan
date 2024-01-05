@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -295,6 +296,8 @@ public class BukuActivity extends AppCompatActivity {
                         response.append(line);
                     }
                     String serverResponse = response.toString();
+                    Log.d("ServerResponse", serverResponse);
+
                 } else {
                 }
 

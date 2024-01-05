@@ -11,12 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,6 +211,17 @@ public class ProfileFragment extends Fragment {
                 String nipPerpus = biodataObject.getString("nip_perpus");
                 String alamat = biodataObject.getString("alamat");
                 String phone = biodataObject.getString("phone");
+                String imagePath = jsonObject.getJSONObject("biodata").getString("gambar");
+                String[] pathParts = imagePath.split("/");
+                String imageNameuser = pathParts[pathParts.length - 1];
+
+                ImageView imageUser = view.findViewById(R.id.imageuser);
+                Glide.with(ProfileFragment.this)
+                        .load(api+"/profile/"+imageNameuser)
+                        .centerCrop()
+                        .signature(new ObjectKey(System.currentTimeMillis()))
+                        .into(imageUser);
+
 
                 TextView txNamapengguna = view.findViewById(R.id.nampeng);
                 TextView txNoanggota = view.findViewById(R.id.noang);

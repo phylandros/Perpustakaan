@@ -304,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                         response.append(line);
                     }
                     String serverResponse = response.toString();
+                    Log.d("ServerResponse", serverResponse);
                 } else {
                 }
 
@@ -382,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!ktp.isEmpty() && !alamat.isEmpty() && !notel.isEmpty()) {
 //                    imageUser.setDrawingCacheEnabled(true);
 
-                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword,nip, ktp, alamat, notel,imagePath);
+                    new PostRegisterAsyncTask().execute(nama, email, password, conpassword,nip, ktp, alamat, notel, imagePath);
                     showRegisterDoneDialog();
                 } else {
                     Toast.makeText(MainActivity.this, "Isi semua field terlebih dahulu", Toast.LENGTH_SHORT).show();
@@ -484,4 +485,5 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
 }

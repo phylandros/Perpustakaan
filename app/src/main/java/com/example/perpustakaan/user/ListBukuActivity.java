@@ -142,7 +142,7 @@ public class ListBukuActivity extends AppCompatActivity {
                 int image = R.drawable.content; // Ganti dengan sumber gambar yang sesuai
 
                 String imagePath = bukuObject.getString("gambar");
-                String[] pathParts = imagePath.split("\\\\"); // Melakukan split path berdasarkan backslash
+                String[] pathParts = imagePath.split("/"); // Melakukan split path berdasarkan backslash
                 String imageName = pathParts[pathParts.length - 1];
 
                 String name = bukuObject.getString("judul");
