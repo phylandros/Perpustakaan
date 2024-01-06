@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.perpustakaan.R;
 import com.example.perpustakaan.admin.BukuActivity;
+import com.example.perpustakaan.admin.PeminjamanActivity;
+import com.example.perpustakaan.admin.PengembalianActivity;
 import com.example.perpustakaan.admin.PerpustakaanActivity;
 import com.example.perpustakaan.admin.VerifikasiActivity;
 import com.example.perpustakaan.model.PustakawanModel;
@@ -80,6 +82,12 @@ public class PustakawanAdapter extends RecyclerView.Adapter<PustakawanAdapter.Pu
                             context.startActivity(verifikasiIntent);
                         } else if (clickedItem.getName().equals("Perpustakaan")) {
                             Intent verifikasiIntent = new Intent(context, PerpustakaanActivity.class);
+                            context.startActivity(verifikasiIntent);
+                        } else if (clickedItem.getName().equals("Peminjaman")) {
+                            Intent verifikasiIntent = new Intent(context, PeminjamanActivity.class);
+                            context.startActivity(verifikasiIntent);
+                        } else if (clickedItem.getName().equals("Pengembalian")) {
+                            Intent verifikasiIntent = new Intent(context, PengembalianActivity.class);
                             context.startActivity(verifikasiIntent);
                         }
                     }

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PengembalianFragment"
-    android:background="#0766AD"
-    >
+    tools:context=".admin.PeminjamanActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,13 +18,15 @@
             android:orientation="vertical"
             android:id="@+id/coordinator_layout"
             >
+
             <LinearLayout
                 android:id="@+id/toolbarContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
-                    android:id="@+id/backinput"
+                    android:id="@+id/backpeminjaman"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_alignParentTop="true"
@@ -39,27 +40,27 @@
                         android:layout_marginLeft="15dp"/>
 
                     <TextView
-                        android:id="@+id/test"
                         android:layout_width="wrap_content"
                         android:layout_height="27dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
-                        android:text="Pengembalian Buku"
+                        android:text="Peminjam Buku"
                         android:textStyle="bold"
                         android:textSize="16dp"
                         android:textColor="#FFF"/>
 
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dashanggota"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/dialogbg"
                 android:orientation="vertical"
                 >
                 <!--            MULAI KODE BUAT ISI DI TEMPAT KOSONG ANGGOTA-->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +68,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Pengembalian"
+                        android:text="Peminjam Buku"
                         android:layout_margin="25dp"
                         android:textStyle="bold"
                         android:textColor="#0766AD"
@@ -79,16 +80,26 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        android:id="@+id/swipeRefreshLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"
-                        />
+                        >
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvpeminjaman"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            />
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>
-</FrameLayout>
+</LinearLayout>

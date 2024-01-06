@@ -105,6 +105,8 @@ public class HomeActivity extends AppCompatActivity {
         pustakawanList.add(new PustakawanModel("Buku", R.drawable.buku));
         pustakawanList.add(new PustakawanModel("Verifikasi", R.drawable.verified));
         pustakawanList.add(new PustakawanModel("Perpustakaan", R.drawable.library));
+        pustakawanList.add(new PustakawanModel("Pengembalian", R.drawable.pengembalian));
+        pustakawanList.add(new PustakawanModel("Peminjaman", R.drawable.borrow));
         pustakawanAdapter.notifyDataSetChanged(); // Populasi data Pustakawan (sudah ada di dalam adapter)
         recyclerView.setAdapter(pustakawanAdapter);
 

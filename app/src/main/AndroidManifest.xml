@@ -27,6 +27,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".admin.PengembalianActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.PeminjamanActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.PerpustakaanActivity"
             android:exported="false" />
         <activity
