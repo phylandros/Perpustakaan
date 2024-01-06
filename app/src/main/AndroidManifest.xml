@@ -27,6 +27,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".user.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.PengembalianActivity"
             android:exported="false" />
         <activity

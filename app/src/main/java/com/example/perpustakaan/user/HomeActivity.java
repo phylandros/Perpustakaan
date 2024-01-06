@@ -80,20 +80,11 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Pindah ke ProfileFragment
-                ProfileFragment profileFragment = new ProfileFragment();
-                Bundle bundle = new Bundle();
-                // Sisipkan data yang diperlukan ke fragment jika diperlukan
-                bundle.putString("userid", userid);
-                bundle.putString("accessToken", accesstoken);
-                profileFragment.setArguments(bundle);
-
-                // Ganti fragment
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.coordinator_home, profileFragment);
-                fragmentTransaction.addToBackStack(null); // Jika ingin kembali ke fragment sebelumnya
-                fragmentTransaction.commit();
+                Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+                profileIntent.putExtra("userid", userid);
+                profileIntent.putExtra("accessToken", accesstoken); // Jika diperlukan
+                startActivity(profileIntent);
+                finish(); // Jika ingin menutup activity saat ini setelah pindah ke ProfileActivity
             }
         });
 

@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,7 +18,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.ObjectKey;
 import com.example.perpustakaan.BuildConfig;
 import com.example.perpustakaan.R;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,81 +29,34 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+public class ProfileActivity extends AppCompatActivity {
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ProfileFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private String userId, refreshToken;
-    private View view;
     private String api = BuildConfig.API;
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+        setContentView(R.layout.activity_profile);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            userId = bundle.getString("userid", "");
+        Intent intent = getIntent();
+        if (intent != null) {
+            userId = intent.getStringExtra("userid");
             new FetchUserDataTask().execute(api+"/users/" + userId);
-
         }
 
-        LinearLayout toolbar = view.findViewById(R.id.toolbar);
+        LinearLayout toolbar = findViewById(R.id.toolbar);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HomeActivity.class);
-                intent.putExtra("userid", userId);
-                startActivity(intent);
-                requireActivity().finish(); // Menutup Activity saat ini jika diinginkan
+                Intent homeIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+                homeIntent.putExtra("userid", userId);
+                startActivity(homeIntent);
+                finish(); // Finish this activity if desired
             }
         });
 
-
-        Button btnLogout = view.findViewById(R.id.btnlogout);
+        Button btnLogout = findViewById(R.id.btnlogout);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,10 +64,7 @@ public class ProfileFragment extends Fragment {
                 new LogoutTask().execute(api+"/logout");
             }
         });
-
-        return view;
     }
-
 
     private class LogoutTask extends AsyncTask<String, Void, Void> {
 
@@ -158,15 +105,13 @@ public class ProfileFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent intent = new Intent(getActivity(), MainActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            getActivity().finish();
-            Toast.makeText(getActivity(),"Anda Telah Logout",Toast.LENGTH_SHORT).show();
+            finish();
+            Toast.makeText(ProfileActivity.this,"Anda Telah Logout",Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     private class FetchUserDataTask extends AsyncTask<String, Void, String> {
 
@@ -215,19 +160,19 @@ public class ProfileFragment extends Fragment {
                 String[] pathParts = imagePath.split("/");
                 String imageNameuser = pathParts[pathParts.length - 1];
 
-                ImageView imageUser = view.findViewById(R.id.imageuser);
-                Glide.with(ProfileFragment.this)
+                ImageView imageUser = findViewById(R.id.imageuser);
+                Glide.with(ProfileActivity.this)
                         .load(api+"/profile/"+imageNameuser)
                         .centerCrop()
                         .signature(new ObjectKey(System.currentTimeMillis()))
                         .into(imageUser);
 
 
-                TextView txNamapengguna = view.findViewById(R.id.nampeng);
-                TextView txNoanggota = view.findViewById(R.id.noang);
-                TextView txNoktp = view.findViewById(R.id.noktp);
-                TextView txAlamat = view.findViewById(R.id.alamat);
-                TextView txEmail = view.findViewById(R.id.email);
+                TextView txNamapengguna = findViewById(R.id.nampeng);
+                TextView txNoanggota = findViewById(R.id.noang);
+                TextView txNoktp = findViewById(R.id.noktp);
+                TextView txAlamat = findViewById(R.id.alamat);
+                TextView txEmail = findViewById(R.id.email);
 
                 txNamapengguna.setText(name);
                 txNoanggota.setText(nipPerpus);
@@ -242,5 +187,4 @@ public class ProfileFragment extends Fragment {
 
         }
     }
-
 }
