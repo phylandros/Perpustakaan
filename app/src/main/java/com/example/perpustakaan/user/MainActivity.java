@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.getWindow().setDimAmount(0.0f);
 
-
-
     }
 
     public void showLoginDialog() {

@@ -313,6 +313,8 @@ public class BukuActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Toast.makeText(BukuActivity.this, "Berhasil di tambahkan", Toast.LENGTH_SHORT).show();
+
         }
     }
 }

@@ -250,6 +250,7 @@ public class PerpustakaanActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Toast.makeText(PerpustakaanActivity.this, "Berhasil di tambahkan", Toast.LENGTH_SHORT).show();
         }
     }
 
