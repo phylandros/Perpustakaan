@@ -3,6 +3,8 @@ package com.example.perpustakaan.user;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.perpustakaan.BuildConfig;
+import android.Manifest;
 import com.example.perpustakaan.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.getWindow().setDimAmount(0.0f);
+
+
 
     }
 
@@ -369,7 +374,11 @@ public class MainActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery(); // Panggil metode untuk membuka galeri bawaan
+                if (checkReadPermission()) {
+                    openGallery();
+                } else {
+                    requestStoragePermission();
+                }
             }
         });
 
@@ -391,6 +400,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    private boolean checkReadPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                READ_EXTERNAL_STORAGE_PERMISSION_CODE);
     }
 
     private void openGallery() {
